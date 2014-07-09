@@ -1,5 +1,5 @@
-long long A,B,C;
-f(long long a,long long b)
+long long A;B,C;
+f(long long a,int b)
 {
   if(b==0)return 1;
   if(b==1)return a%C;
@@ -7,6 +7,6 @@ f(long long a,long long b)
   else return (a*f((a*a)%C,(b-1)/2))%C;
 }
 main(i){
-  scanf("%lld%lld%lld",&A,&B,&C);
+  scanf("%lld%d%d",&A,&B,&C);
   printf("%d",f(A,B));
 }
