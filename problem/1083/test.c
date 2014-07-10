@@ -1,21 +1,10 @@
-a[51][9],i,j,t[9],r[9],*m,k,p;
-f(char *x,char *y)
-{
-  strcpy(t,x);strcat(t,y);
-  strcpy(r,y);strcat(r,x);
-  return strcmp(t,r);
-}
-
+int a[51],i,j,t,m,p;
 main(n,s){
-  for(scanf("%d",&n);i<n;scanf("%s",a+i++));scanf("%d",&s);
-  for(i=0;i<=n&&s>0;i++)
-  {
-    p=-1;m=" ";for(j=i,k=0;j<n&&k<=s;j++,k++)if(f(m,a[j])==-1){m=a[j];p=j;}
-    for(j=p;j>0&&s;j--)
+    for(scanf("%d",&n);i<n;i++)scanf("%d",a+i);scanf("%d",&s);
+    for(i=0;i<n&&s>0;i++)
     {
-      k=f(a[j],a[j-1]);
-      if(k==1||(k==0&&strcmp(a[j],a[j-1])==1)){strcpy(t,a[j]);strcpy(a[j],a[j-1]);strcpy(a[j-1],t);s--;}
+      p=m=0;for(j=i;j<n&&j<=i+s;j++)if(m<=a[j]){m=a[j];p=j;}
+      for(j=p;j>i&&s;j--){t=a[j];a[j]=a[j-1];a[j-1]=t;s--;}
     }
-  }
-  for(i=0;i<n;i++)printf("%s ",a[i]);
+    for(i=0;i<n;i++)printf("%d ",a[i]);
 }
