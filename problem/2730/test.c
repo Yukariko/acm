@@ -1,10 +1,8 @@
 #include <time.h>
-struct tm limit_day,submit_day,temp_day;
-time_t limit_time,submit_time;
-double diff_time;
+struct tm limit_day, submit_day, temp_day;
+time_t limit_time,submit_time,diff_time;
 int year,check;
-double absd(double n){return n>0?n:-n;}
-int leap(x){return x%4?0:x%100?1:x%400?0:1;}
+long long abst(time_t n){return n>=0?n:-n;}
 main(i)
 {
   for(gets(&i);~scanf("%d/%d/%d %d/%d",&limit_day.tm_mon,&limit_day.tm_mday,&year,&submit_day.tm_mon,&submit_day.tm_mday);)
@@ -18,21 +16,14 @@ main(i)
       submit_day.tm_year=year+i-1900;
       temp_day = submit_day;
       submit_time=mktime(&temp_day);
-      if(temp_day.tm_mday != submit_day.tm_mday) continue;
-      if((submit_day.tm_mon==1 && limit_day.tm_mon==2) || (submit_day.tm_mon==2 && limit_day.tm_mon==1))
-      {
-        limit_day.tm_year=submit_day.tm_year;
-        limit_time=mktime(&limit_day);
-      }
-      diff_time=difftime(submit_time,limit_time);
-      diff_time/=86400.0;
-     
-      if (absd(diff_time) < 8.0) 
+      if(i==0&&temp_day.tm_mday!=submit_day.tm_mday){check=1;puts("OUT OF RANGE");break;};
+      diff_time=submit_time-limit_time;
+      diff_time/=86400;
+      if (abst(diff_time) < 8) 
       {
         check=1;
         if (diff_time == 0) puts("SAME DAY");
-        else printf("%d/%d/%d IS %.0lf %s %s\n",submit_day.tm_mon+1,submit_day.tm_mday,year+i,absd(diff_time),absd(diff_time)==1.0?"DAY":"DAYS",diff_time>0?"AFTER":"PRIOR");
-        if(!leap(year)) break;
+        else printf("%d/%d/%d IS %lld %s %s\n",submit_day.tm_mon+1,submit_day.tm_mday,year+i,abst(diff_time),abst(diff_time)==1?"DAY":"DAYS",diff_time>0?"AFTER":"PRIOR");
       }
     }
     if(!check) puts("OUT OF RANGE");
