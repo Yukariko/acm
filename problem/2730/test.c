@@ -18,7 +18,12 @@ main(i)
       submit_day.tm_year=year+i-1900;
       temp_day = submit_day;
       submit_time=mktime(&temp_day);
-     // if(temp_day.tm_mday != submit_day.tm_mday) continue;
+      if(temp_day.tm_mday != submit_day.tm_mday) continue;
+      if((submit_day.tm_mon==1 && limit_day.tm_mon==2) || (submit_day.tm_mon==2 && limit_day.tm_mon==1))
+      {
+        limit_day.tm_year=submit_day.tm_year;
+        limit_time=mktime(&limit_day);
+      }
       diff_time=difftime(submit_time,limit_time);
       diff_time/=86400.0;
      
@@ -27,6 +32,7 @@ main(i)
         check=1;
         if (diff_time == 0) puts("SAME DAY");
         else printf("%d/%d/%d IS %.0lf %s %s\n",submit_day.tm_mon+1,submit_day.tm_mday,year+i,absd(diff_time),absd(diff_time)==1.0?"DAY":"DAYS",diff_time>0?"AFTER":"PRIOR");
+        if(!leap(year)) break;
       }
     }
     if(!check) puts("OUT OF RANGE");
