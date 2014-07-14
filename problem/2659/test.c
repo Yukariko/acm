@@ -25,5 +25,4 @@ main(a,b,c,d)
   }
   for(i=1111;i<p;i++)map[i]&&s++;
   printf("%d",s+1);
-  while(1);
 }
