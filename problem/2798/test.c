@@ -1,0 +1,19 @@
+a[101];i,j,k,t;s;
+main(n,m)
+{
+  for(scanf("%d%d",&n,&m);~scanf("%d",a+i++););
+  for(i=0;i<n;i++)
+  {
+    for(j=0;j<n;j++)
+    {
+      if(i==j)continue;
+      for(k=0;k<n;k++)
+      {
+        if(j==k)continue;
+        t=a[i]+a[j]+a[k];
+        s=t>m||s>t?s:t;
+      }
+    }
+  }
+  printf("%d",s);
+}
