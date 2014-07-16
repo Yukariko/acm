@@ -1,0 +1,12 @@
+i;j;
+main(r,c,a,b)
+{
+  for(scanf("%d%d%d%d",&r,&c,&a,&b);i<r*a;i++)
+  {
+    for(j=0;j<c*b;j++)
+    {
+      putchar((i/a+j/b)%2?'.':'X');
+    }
+    puts("");
+  }
+}
