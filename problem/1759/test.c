@@ -3,7 +3,6 @@ char print[16];
 int i,j,L,C;
 f(i,c)
 {
-  char temp;
   if(c==L)
   {
     int vowel=0,consonant=0;
