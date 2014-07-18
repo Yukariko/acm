@@ -19,11 +19,8 @@ f(i,c)
   {
     if(crypt[i])
     {
-      temp=crypt[i];
-      crypt[i]=0;
-      print[c]=temp;
-      f(i,c+1);
-      crypt[i]=temp;
+      print[c]=crypt[i];
+      f(i+1,c+1);
     }
   }
 }
