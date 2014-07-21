@@ -1,26 +1,17 @@
-int a[101],b[2];
+int a[101];
 int dp[10001];
 int n,k;
-f(i,j)
-{
-  int p,q;
-  if(i==k)b[0]++;
-  if(i<k)
-  {
-    for(;j<n;j++)
-    {
-      for(p=a[j];i+p<=k;p+=a[j])
-      {
-        dp[i+p]++;
-        f(i+p,j+1);
-      }
-    }
-  }
-}
-main(i,j)
+main(i,j,p)
 {
   scanf("%d%d",&n,&k);
   for(i=0;i<n;)scanf("%d",&a[i++]);
-  f(0,0);
-  printf("%d %d",b[0],dp[k]);
+  for(i=0;i<=k;i+=a[0])dp[i]++;
+  for(i=1;i<n;i++)
+  {
+    for(j=a[i];j<=k;j++)
+    {
+      dp[j]+=dp[j-a[i]];
+    }
+  }
+  printf("%d",dp[k]);
 }
