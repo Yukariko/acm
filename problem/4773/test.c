@@ -1,7 +1,49 @@
+#define MAX_stack 10
+#define EMPTY -987654321
+typedef int DATA;
+typedef struct stack{DATA data;struct stack *next;}stack;
+stack *head[MAX_stack],*tail[MAX_stack];
+void push(int index,DATA val)
+{
+  stack *p=head[index];
+  head[index]=(stack *)malloc(sizeof(stack));
+  head[index]->data=val;
+  head[index]->next=p;
+}
+DATA pop(int index)
+{
+  stack *p=head[index];
+  DATA result=head[index]->data;
+  head[index]=head[index]->next;
+  free(p);
+  return result;
+}
+int isEmpty(int index)
+{
+  return head[index]->data==EMPTY;
+}
+void init(int index)
+{
+  head[index]=(stack *)malloc(sizeof(stack));
+  head[index]->data=EMPTY;
+  head[index]->next=0;
+  tail[index]=head[index];
+}
+void destroy(int index)
+{
+  for(;!isEmpty(index);)pop(index);
+}
+stack *find(int index,DATA val)
+{
+  stack *p=head[index];
+  for(;p;p=p->next)if(p->data==val)return p;
+  return 0;
+}
+
 char a[101],b[101];
 int rome[99];
 char dim[]="IVXLCDM";
-init()
+romeinit()
 {
   rome['I']=1;rome['V']=5;
   rome['X']=10;rome['L']=50;
@@ -56,47 +98,47 @@ char *dim2rome(int p,char *a)
 }
 main(i)
 {
-  init();
+  init(0);
+  romeinit();
   int p,q,t;
-  for(p=q=-1;gets(a);)
+  for(;gets(a);)
   {
     if(a[0]=='+'||a[0]=='-'||a[0]=='*'||a[0]=='/'||a[0]=='=')
     {
       if(a[0]=='=')
       {
-        if(q==-1)puts("stack underflow");
-        else if(q<1||q>4999)puts("out of range exception");
-        else puts(dim2rome(q,b));
+        if(isEmpty(0))puts("stack underflow");
+        else if(head[0]->data<1||head[0]->data>4999)puts("out of range exception");
+        else puts(dim2rome(head[0]->data,b));
+        
       }
-      else if(p==-1||q==-1)puts("stack underflow");
-      else if(a[0]=='+')
+      else if(head[0]->data==EMPTY||head[0]->next->data==EMPTY)puts("stack underflow");
+      else 
       {
-        t=q;
-        q=p+q;
-        p=t;
-      }
-      else if(a[0]=='-')
-      {
-        t=q;
-        q=p-q;
-        p=t;
-      }
-      else if(a[0]=='*')
-      {
-        t=q;
-        q=q*p;
-        p=t;
-      }
-      else if(a[0]=='/')
-      {
-        if(q==0){puts("division by zero exception");q=p;p=-1;}
-        else {t=q;q=p/q;p=t;}
+        p=pop(0);
+        q=pop(0);
+        if(a[0]=='+')
+        { 
+          push(0,p+q); 
+        }
+        else if(a[0]=='-')
+        {
+          push(0,q-p);
+        }
+        else if(a[0]=='*')
+        {
+          push(0,p*q);
+        }
+        else if(a[0]=='/')
+        {
+          if(p==0){puts("division by zero exception");push(0,q);}
+          else {push(0,q/p);}
+        }
       }
     }
     else
     {
-      p=q;
-      q=rome2dim(a);
+      push(0,rome2dim(a));
     }
   }
 }
