@@ -26,7 +26,7 @@ main(m,k,j,i,n)
   {
     gets(a);
     char b[10001]={0};
-    int count[7]={100000,1,3,1,3,1,3};
+    int count[7]={10000,1,3,1,3,1,3};
     for(m=j=k=0;k<7;k++)
     for(i=m;a[i];i++)
     {
