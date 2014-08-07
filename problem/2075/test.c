@@ -5,7 +5,6 @@ cmp(int *a,int *b)
 {
   return *a>*b?1:*a<*b?-1:0;
 }
-
 main()
 {
   int p,q,t;
@@ -21,7 +20,14 @@ main()
     }
     else if(arr[0]<k)
     {
-      for(p=1;p<j;p++)if(k<arr[p])break;
+      int first=0,last=j-1;
+      for(;first<=last;)
+      {
+        p=(first+last)/2;
+        if(arr[p]>k)last=p-1;
+        else if (arr[p]<k) first = p+1;
+      }
+      p=first;
       for(q=0;q<p;q++)
       {
         arr[q]=arr[q+1];
@@ -29,6 +35,6 @@ main()
       arr[p-1]=k;
     }
   }
-  printf("%d ",arr[0]);
+  printf("%d",arr[0]);
 }
 
