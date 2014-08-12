@@ -1,10 +1,7 @@
 int t;
 long long n,m;
 long long s;
-long long absl(long long a)
-{
-  return a>0?a:-a;
-}
+
 main()
 {
   int i;
@@ -13,7 +10,6 @@ main()
   {
     scanf("%lld%lld",&n,&m);
     printf("Scenario #%d:\n",i);
-
     if(n*m>=0)
     {
       if(n>m)s=n*(n+1)/2-m*(m-1)/2;
