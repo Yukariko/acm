@@ -67,7 +67,7 @@ main()
           }
         }
       }
-      else // 수직발사 
+      else
       {
         for(p=head[0]->next;p;ph=p,p=p->next)
         {
