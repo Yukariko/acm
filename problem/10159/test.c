@@ -22,8 +22,11 @@ main()
   for(scanf("%d%d",&n,&m);m--;)
   {
     scanf("%d%d",&x,&y);
-    a[x][y]=-1;
-    a[y][x]=1;
+    if(!a[x][y])
+    {
+      a[x][y]=-1;
+      a[y][x]=1;
+    }
   }
   int i,j,s;
   for(i=1;i<=n;i++)
@@ -40,5 +43,4 @@ main()
     }
     printf("%d\n",s);
   }
-  printf("[%d]", 1/0);
 }
