@@ -7,7 +7,7 @@ f(r)
 	  return 1;
 	p = log2(i) + 1e-6 + 1.0;
 	r = n - p;
-  if (!r)
+  if (!r) 
       return 1;
 	if (r > n / 2)
        return 1;
