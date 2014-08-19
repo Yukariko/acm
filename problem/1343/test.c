@@ -1,7 +1,6 @@
 main()
 {
   char board[501];
-  int s=strlen(gets(board));
   int i,j,k;
   for(i=0;board[i];i++)
   {
