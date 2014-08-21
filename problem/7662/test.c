@@ -1,111 +1,130 @@
-#define MAX_QUEUE 1
-typedef int DATA;
-typedef struct queue{DATA data;struct queue *next;struct queue *prev;}queue;
-queue *head[MAX_QUEUE],*tail[MAX_QUEUE];
-void push(int index,DATA val)
+typedef struct PAIR{int v,i;} hDATA;
+typedef struct Heap{
+  hDATA *arr;
+  int count;
+  int capacity;
+  int heap_type;
+}Heap;
+#define MAX_HEAP 1
+#define MIN_HEAP 2
+Heap *CreateHeap(int capacity, int heap_type)
 {
-  tail[index]->next=(queue *)malloc(sizeof(queue));
-  tail[index]->next->prev=tail[index];
-  tail[index]=tail[index]->next;
-  tail[index]->data=val;
-  tail[index]->next=0;
+  Heap *h=(Heap *)malloc(sizeof(Heap));
+  h->count=0;
+  h->capacity=capacity;
+  h->heap_type=heap_type;
+  h->arr=(hDATA *)malloc(sizeof(hDATA)*capacity);
+  return h;
 }
-void put(int index,queue *q,DATA val)
+int hLeftChild(Heap *h, int i)
 {
-  queue *t = q->prev;
-  q->prev=(queue *)malloc(sizeof(queue));
-  q->prev->data=val;
-  if(t)
+  int t=2*i+1;
+  if(t>=h->count)return -1;
+  return t;
+}
+int hRightChild(Heap *h, int i)
+{
+  int t=2*i+2;
+  if(t>=h->count)return -1;
+  return t;
+}
+int hCompare(Heap *h,hDATA p,hDATA q)
+{
+  if(h->heap_type==MAX_HEAP)
   {
-    t->next=q->prev;
-    q->prev->prev=t;
+    return p.v>q.v;
   }
-  else q->prev->prev=0;
-  if(q==head[index])head[index]=q->prev;
+  else //MIN_HEAP
+  {
+    return p.v<q.v;
+  }
+}
+void hPercolateDown(Heap *h, int i)
+{
+  int l,r,max;
+  hDATA t;
+  l=hLeftChild(h,i);
+  r=hRightChild(h,i);
+  if(l!=-1&&hCompare(h,h->arr[l],h->arr[i]))max=l;
+  else max=i;
+  if(r!=-1&&hCompare(h,h->arr[r],h->arr[max]))max=r;
+  if(max!=i)
+  {
+    t=h->arr[i];
+    h->arr[i]=h->arr[max];
+    h->arr[max]=t;
+    hPercolateDown(h,max);
+  }
+}
+void hDeleteTop(Heap *h)
+{
+  hDATA data;
+  if(h->count==0)return;
+  data=h->arr[0];
+  h->arr[0]=h->arr[h->count-1];
+  h->count--;
+  hPercolateDown(h,0);
+}
+int hInsert(Heap *h, hDATA data)
+{
+  int i,t;
+  h->count++;
+  for(i=h->count-1;i>0&&hCompare(h,data,h->arr[t=(i-1)/2]);i=t)
+  {
+    h->arr[i]=h->arr[t];
+  }
+  h->arr[i]=data;
+}
 
-  q->prev->next=q;
-}
-DATA pop(int index)
-{
-  queue *p=head[index];
-  head[index]=head[index]->next;
-  free(p);
-}
-DATA pick(queue *parent,queue *child)
-{
-  DATA res = child->data;
-  parent->next=child->next;
-  free(child);
-  return res;
-}
-void init(int index)
-{
-  head[index]=(queue *)malloc(sizeof(queue));
-  head[index]->data=0;
-  head[index]->next=0;
-  head[index]->prev=0;
-  tail[index]=head[index];
-}
-void destroy(int index)
-{
-  for(;head[index];)pop(index);
-}
 main()
 {
+  
   int t;
+  Heap *h=CreateHeap(1000001,MAX_HEAP);
+  Heap *h2=CreateHeap(1000001,MIN_HEAP);
   for(scanf("%d",&t);t--;)
   {
-
-    init(0);
-    char cmd;
-    int k,val,arrNull=0;
-    queue *q,*qp;
-    for(scanf("%d",&k);k--;)
+    int n;
+    int i,min,s=0;
+    char ck[1000001]={0};
+    h->count=h2->count=0;
+    for(scanf("%d",&n);n--;)
     {
+      char cmd;
+      int val;
+      hDATA t;
       scanf(" %c %d",&cmd,&val);
       if(cmd=='I')
       {
-        push(0,val);
-        arrNull=1;
+        t.v=val;
+        t.i=n;
+        hInsert(h,t);
+        hInsert(h2,t);
+        ck[n]=1;
       }
-      else if (cmd=='D'&&arrNull)
+      else
       {
-        if(head[0]==tail[0]){arrNull=0;continue;}
-        if(val == -1)
+        while(h->count&&!ck[h->arr[0].i])hDeleteTop(h);
+        while(h2->count&&!ck[h2->arr[0].i])hDeleteTop(h2);
+        if(h->count==0)continue;
+        if(val==1)
         {
-          queue *min=tail[0];
-          for(q=head[0]->next;q;q=q->next)
-          {
-            min=min->data>q->data?q:min;
-          }
-          min->prev->next=min->next;
-          if(min->next)min->next->prev=min->prev;
-          if(min==tail[0])tail[0]=min->prev;
-          free(min);
+          ck[h->arr[0].i]=0;
+          hDeleteTop(h);
         }
         else
         {
-          queue *max=tail[0];
-          for(q=head[0]->next;q;q=q->next)
-          {
-            max=max->data<q->data?q:max;
-          }
-          max->prev->next=max->next;
-          if(max->next)max->next->prev=max->prev;
-          if(max==tail[0])tail[0]=max->prev;
-          free(max);
+          ck[h2->arr[0].i]=0;
+          hDeleteTop(h2);
         }
       }
     }
-    queue *min=tail[0],*max=tail[0];
-    for(q=head[0]->next;q;q=q->next)
+    while(h->count&&!ck[h->arr[0].i])hDeleteTop(h);
+    while(h2->count&&!ck[h2->arr[0].i])hDeleteTop(h2);
+    if(h->count==0||h2->count==0)puts("EMPTY");
+    else
     {
-      min=min->data>q->data?q:min;
-      max=max->data<q->data?q:max;
+      printf("%d %d\n",h->arr[0].v,h2->arr[0].v);
     }
-    
-    if(head[0]!=tail[0])printf("%d %d\n",max->data,min->data);
-    else puts("EMPTY");
-    destroy(0);
   }
 }
