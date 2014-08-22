@@ -20,21 +20,38 @@ main()
         dist[j][i]=s;
         s+=time[j];
       }
+      dist[i][n]=s;
+      dist[n][i]=s;
     }
+    dist[n][n]=987654321;
     visit[a]=1;
-    for(k=0;k<n-1;k++)
+    for(j=k=0;k<n-1;k++)
     {
       int min=a;
-      for(i=1;i<n;i++)
+      for(i=1;i<=n;i++)
       {
-        if(visit[i]==0)min=dist[a][min]>dist[a][i]?i:min;
+        if(visit[i]==0)
+        {
+          if(dist[a][min]>dist[a][i])
+          {
+            min=i;
+          }
+          else if (dist[a][min]==dist[a][i])
+          {
+            printf("! %d %d\n",min,i);
+            //if(abs(a-min)<abs(a-i)){min=i;}
+          }
+        }
       }
       if(visit[min]==0)
       {
         visit[min]=1;
-        t+=dist[a][min];
+        j+=dist[a][min];
+        t+=j;
+        
         a=min;
       }
+      printf("[%d] %d %d\n",a,t,j);
     }
     printf("%d\n",t);
   }
