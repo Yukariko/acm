@@ -18,7 +18,7 @@ bigplus(char *store,char *a,char *b)
 main()
 {
   int n;
-  char i[10001]={0},j[10001]={0},t[10001]={0};
+  char i[1001]={0},j[1001]={0},t[1001]={0};
   i[0]='0';
   j[0]='1';
   for(scanf("%d",&n);--n;)
