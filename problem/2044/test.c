@@ -39,12 +39,10 @@ main()
         for(;screen[i][k]!='+';k++);
         win[tnum].w=k-t+1;
         j=k;
-       // puts(win[tnum].title);
         tnum++;
       }
     }
   }
-  printf("%d\n",tnum);
   qsort(win,tnum,sizeof(WINDOW),cmp);
   for(int i=0;i<m;i++)for(int j=0;j<n;j++)new_screen[i][j]='.';
   for(int i=0;i<tnum;i++)
