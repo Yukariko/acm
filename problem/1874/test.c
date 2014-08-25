@@ -3,7 +3,7 @@ main()
   int n;
   scanf("%d",&n);
   int stack[100001];
-  char print[100001][2]={0};
+  char print[200001][2]={0};
   int i,j,k,p;
   int sIndex=0;
   int max=0;
