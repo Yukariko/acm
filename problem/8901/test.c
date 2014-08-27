@@ -1,24 +1,26 @@
 #define MAX(a,b) (a>b?a:b)
 #define MIN(a,b) (a>b?b:a)
-int ab,bc,ca;
-int max;
-f(a,b,c,s)
-{
-  max=max<s?s:max;
-  if(a>0&&b>0)f(a-1,b-1,c,s+ab);
-  if(a>0&&c>0)f(a-1,b,c-1,s+ca);
-  if(b>0&&c>0)f(a,b-1,c-1,s+bc);
-}
 main()
 {
   int t;
   for(scanf("%d",&t);t--;)
   {
     int a,b,c;
+    int ab,bc,ca;
     scanf("%d%d%d",&a,&b,&c);
     scanf("%d%d%d",&ab,&bc,&ca);
-    max=0;
-    f(a,b,c,0);
+    int i,j;
+    int max=0;
+    int minAB,minBC;
+    minAB=MIN(a,b);
+    for(i=0;i<=minAB;i++)
+    {
+      minBC=MIN(b-i,c);
+      for(j=0;j<=minBC;j++)
+      {
+        max=MAX(ab*i+bc*j+ca*MIN(a-i,c-j),max);
+      }
+    }
     printf("%d\n",max);
   }
 }
