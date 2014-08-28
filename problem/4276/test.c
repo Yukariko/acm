@@ -1,37 +1,23 @@
-long long n,m;
-long long f(long long p,long long q)
+long long f(long long n)
 {
-  long long i,k=0,s=q-p;
-  for(i=1;i<=s;i*=10)
+  long long x,j,k,t;
+  x=0;
+  for(t=0,j=1;j<=n;j*=10,t++)
   {
-    k+=s/i*(i/10);
+    k=(n/j)%10;
+    if(!k){x-=j-1;x+=n%j;}
+    x+=k*t*(j/10);
   }
-  return k;
-}
-long long u(long long p,long long q)
-{
-  long long i,s;
-  for(s=p==0;p<=q;p++)
-  {
-    for(i=1;i<=p;i*=10)s+=p/i%10?0:1;
-
-  }
-  return s;
-}
-long long t(long long q)
-{
-  long long i,k=0,s=0,j;
-  for(j=0,i=1;i<=q;i*=10,j++)
-  {
-    if(i>=10)s+=9*i/100*(j-1)+1;
-  }
-  return s;
+  return x;
 }
 main()
 {
-  for(;scanf("%lld%lld",&n,&m),n>=0;)
+  long long a,b;
+  for(;scanf("%lld%lld",&a,&b),a!=-1;)
   {
-    
-    printf("%lld %lld\n",u(n,m),t(m));
+    long long s=f(b)-f(a);
+    if(a==0)s++;
+    for(;a;a/=10)s+=a%10==0;
+    printf("%lld\n",s);
   }
 }
