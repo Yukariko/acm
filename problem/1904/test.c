@@ -2,10 +2,10 @@ main()
 {
   int n;
   scanf("%d",&n);
-  long long i=1,j=0,t;
+  int i=1,j=0,t;
   for(;n--;)
   {
-    t=i%15746;
+    t=i;
     i=(i+j)%15746;
     j=t;
   }
