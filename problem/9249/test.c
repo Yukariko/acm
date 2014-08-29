@@ -1,66 +1,35 @@
 #define MAX(a,b) (a>b?a:b)
-make_pi(int *pi,char *p)
+#define MIN(a,b) (a>b?b:a)
+char stack[200001];
+LCS(char *p,char *q)
 {
-  int i=1,j=0;
-  for(;p[i];)
+  int i,j,max=0,k;
+  int dp[2][200002]={};
+  for(i=1;p[i];i++)
   {
-    if(!j||p[i]==p[j])
+    for(j=1;q[j];j++)
     {
-      j++;i++;pi[i]=j;
+      if(p[i]==q[j])
+      {
+        dp[i&1][j]=dp[i&1^1][j-1]+1;
+      }
+      else
+      {
+        dp[i&1][j]=0;
+      }
+      if(max<dp[i&1][j])
+      {
+        max=dp[i&1][j];
+      }
     }
-    else j=pi[j];
   }
-}
-kmp(int *pi,char *p,char *q,int pi_len)
-{
-  int i,j,max=1;
-  for(i=j=1;p[i];)
-  {
-    if(!j||p[i]==q[j]){i++;j++;}
-    else j=pi[j];
-    max=max<j?j:max;
-    if(j==pi_len+1) return max-1;
-  }
-  return max-1;
+  printf("%d\n",max);
+
 }
 main()
 {
-  char a[200001],b[200001];
-  int pi[200001]={};
+  char a[200002],b[200002];
   int i,j;
-  int len1,len2,max=0,res;
-  len1=strlen(gets(a+1));
-  len2=strlen(gets(b+1));
-  if(len1<len2)
-  {
-    for(i=0;i<len1;i++)
-    {
-      make_pi(pi,a+i);
-      res=kmp(pi,b,a+i,len1-i);
-      if(max<res)
-      {
-        max=res;
-        j=i+1;
-      }
-    }
-    printf("%d\n",max);
-    a[j+max]=0;
-    puts(a+j);
-  }
-  else
-  {
-    for(i=0;i<len2;i++)
-    {
-      make_pi(pi,b+i);
-      res=kmp(pi,a,b+i,len2-i);
-      if(max<res)
-      {
-        max=res;
-        j=i+1;
-      }
-    }
-    printf("%d\n",max);
-    b[j+max]=0;
-    puts(b+j);
-  }
+  gets(a+1);gets(b+1);
+  LCS(a,b);
 }
