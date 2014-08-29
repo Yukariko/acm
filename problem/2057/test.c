@@ -1,10 +1,10 @@
-unsigned long long fact[10000];
-unsigned long long n;
+long long fact[10000];
+long long n;
 int k;
-f(int i,unsigned long long s)
+f(int i,long long s)
 {
   int p;
-  unsigned long long t;
+  long long t;
   if(s==n){puts("YES");exit(0);}
   for(p=i;p<k;p++)
   {
@@ -19,9 +19,9 @@ f(int i,unsigned long long s)
 }
 main()
 {
-  scanf("%llu",&n);
+  scanf("%lld",&n);
   fact[k++]=1;
-  unsigned long long i,j;
+  long long i,j;
   for(i=j=1;i>=1&&i<=n;i*=++j)fact[k++]=i;
   if(n)f(0,0LL);
   puts("NO");
