@@ -1,26 +1,25 @@
-char a[531442];i;j;l;
-f(p,q)
-{
-  int x,z;
-  if(q-p>2)
+char a[6562][6562];
+main(){
+  int n;
+  int i,j,k=1,l=2,t=3,p;
+  scanf("%d",&n);
+  for(i=0;i<n;i++)a[0][i]='*';
+  for(j=1;j<n;j++)
   {
-    x=p+(q-p)/3;
-    z=p+(q-p)*2/3;
-    for(;x<z;x++)a[x]=' ';
-    f(p,p+(q-p)/3);
-    f(z,q);
-  }
-}
-main(n,k){
-  for(scanf("%d",&n);j<n;j++){
-    l=1;for(i=0;i<j;i++)l*=3;
-    for(k=0;k<n/l;k++)
+    if(k<=j&&j<l)
     {
-      for(i=0;i<l;i++)a[i]='*';
-      a[l]=0;
-      f(0,l);
-      printf("%s",a);
+      for(p=i=0;i<n;i++)
+      {
+        a[j][i]=p>=k&&p<l?' ':a[j-k][i];
+        p=p+1==t?0:p+1;
+      }
     }
-    puts("");
+    else if(j==l)
+    {
+      for(i=0;i<k;i++)strcpy(a[j++],a[i]);
+      k+=l;l=k*2;t*=3;
+      j--;
+    }
   }
+  for(i=0;i<n;i++)puts(a[i]);
 }
