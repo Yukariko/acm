@@ -1,5 +1,5 @@
 #define MAX_QUEUE 1
-typedef struct coord{int x,y,w;} DATA;
+typedef struct coord{int x,y;} DATA;
 typedef struct queue{DATA data;struct queue *next;}queue;
 queue *head[MAX_QUEUE],*tail[MAX_QUEUE];
 void push(int index,DATA val)
@@ -17,19 +17,11 @@ DATA pop(int index)
   free(p);
   return result;
 }
-int isEmpty(int index)
-{
-  return !head[index];
-}
 void init(int index)
 {
   head[index]=(queue *)malloc(sizeof(queue));
   head[index]->next=0;
   tail[index]=head[index];
-}
-void destroy(int index)
-{
-  for(;!isEmpty(index);)pop(index);
 }
 int point[51][51];
 char visit[51][51];
@@ -68,8 +60,8 @@ main()
     }
   }
   DATA t,pick;
-  int s,k,p;
-  t.x=1;t.y=1;t.w=0;
+  int s,k,p,w;
+  t.x=1;t.y=1;
   push(0,t);
   point[1][1]=0;
   for(k=1;k;)
@@ -77,45 +69,43 @@ main()
     for(p=k,k=0;p--;)
     {
       pick=pop(0);
-      t.x=t.y=t.w=0;
       if(pick.x<n)
       {
         if(map[pick.x+1][pick.y])
         {
-          t.w=0;
+          w=0;
         }
         else
         {
-          t.w=1;
+          w=1;
         }
-        if(point[pick.x+1][pick.y]>point[pick.x][pick.y]+t.w)
+        if(point[pick.x+1][pick.y]>point[pick.x][pick.y]+w)
         {
-          point[pick.x+1][pick.y]=point[pick.x][pick.y]+t.w;
-          if(t.w==0)
+          point[pick.x+1][pick.y]=point[pick.x][pick.y]+w;
+          if(w==0)
           {
             clear();
             f(pick.x+1,pick.y,point[pick.x+1][pick.y]);
           }
         }
-        t.x=pick.x+1;t.y=pick.y;t.w=pick.w+t.w;
+        t.x=pick.x+1;t.y=pick.y;
         if(!mask[pick.x+1][pick.y]){push(0,t);k++;}
         mask[pick.x+1][pick.y]=1;
       }
       if(pick.y<n)
       {
-        
         if(map[pick.x][pick.y+1])
         {
-          t.w=0;
+          w=0;
         }
         else
         {
-          t.w=1;
+          w=1;
         }
-        if(point[pick.x][pick.y+1]>point[pick.x][pick.y]+t.w)
+        if(point[pick.x][pick.y+1]>point[pick.x][pick.y]+w)
         {
-          point[pick.x][pick.y+1]=point[pick.x][pick.y]+t.w;
-          if(t.w==0)
+          point[pick.x][pick.y+1]=point[pick.x][pick.y]+w;
+          if(w==0)
           {
             clear();
             f(pick.x,pick.y+1,point[pick.x][pick.y+1]);
@@ -127,13 +117,5 @@ main()
       }
     }
   }
-/*  for(i=1;i<=n;i++)
-  {
-    for(j=1;j<=n;j++)
-    {
-      printf("%2d ",point[i][j]);
-    }
-    puts("");
-  }*/
   printf("%d",point[n][n]);
 }
