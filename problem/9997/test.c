@@ -2,32 +2,27 @@ main()
 {
   int n;
   char word[26][101];
-  int a[26]={0};
-  int b[26]={0}
+  char alpha[26][26]={};
   scanf("%d ",&n);
-  int i,j,s;
+  int i,j,k,s;
   for(i=0;i<n;i++)
   {
     gets(word[i]);
-    for(j=0;word[i][j];j++)b[word[i][j]-'a']=1;
-    for(j=0;j<26;j++)
-    {
-      a[i]+=b[i];
-      b[i]=0;
-    }
+    for(j=0;word[i][j];j++)alpha[i][word[i][j]-'a']++;
   }
   for(s=i=0;i<n;i++)
   {
-    for(j=0;word[i][j];j++)
+    for(j=i+1;j<n;j++)
     {
-      if(a[word[i][j]-'a']<2)break;
-    }
-    if(!word[i][j])
-    {
-      puts(word[i]);
-      s++;
+      for(k=0;k<26;k++)
+      {
+        if(!alpha[i][k]&&!alpha[j][k])
+        {
+          break;
+        }
+      }
+      if(k==26)s++;
     }
   }
-  for(i=0;i<26&&a[i];i++);
-  printf("%d",i==26?1<<s:0);
+  printf("%d",s);
 }
