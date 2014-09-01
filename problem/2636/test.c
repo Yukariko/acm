@@ -23,7 +23,6 @@ main()
   c=cc=0;
   for(k=1;k;s++)
   {
-    puts("---");
     k=0;
     f(0,0);
     cc=0;
@@ -51,9 +50,7 @@ main()
       for(j=0;j<m;j++)
       {
         map[i][j]=temp[i][j];
-        printf("%d ",map[i][j]);
       }
-      puts("");
     }
   }
   printf("%d\n%d",s-1,c);
