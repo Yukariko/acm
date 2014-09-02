@@ -10,6 +10,6 @@ main()
     s+=(double)1/j;
     if(i==1)puts("1 2");
     if(i==2)puts("2 2.5");
-    if(i>2)printf("%d %.9lf\n",i,s);
+    if(i>2)printf("%lld %.9lf\n",i,s);
   }
 }
