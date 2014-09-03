@@ -2,26 +2,38 @@ main()
 {
   int n;
   scanf("%d",&n);
-  int s=0,t;
-  long long i,j,k;
-  for(i=1;s<n;i++)
+  int s=0;
+  char a[102]={0};
+  int i,j,k=100,len=1,bol,t;
+  a[k]='0';
+  for(s=0;s<n;s++)
   {
-    if(i<10)s++;
-    else
+    bol=0;
+    for(i=k;i>k-len;i--)
     {
-      t=1;
-      for(j=i;;j/=10)
+      if(a[i-1]==0||a[i-1]>a[i]+1)
       {
-        if(j<10){k=1;break;}
-        if(j%10>=j/10%10){k=0;break;}
-        t*=10;
+        if(a[i]+1>'9')
+        {
+          bol=1;
+          break;
+        }
+        else
+        {
+          j='0';
+          for(t=k;t>i;t--)a[t]=j++;
+          a[i]+=1;
+          break;
+        }
       }
-      if(k==0)
-      {
-        //i+=1;
-      }  
-      else s++;
+    }
+    if(bol)
+    {
+      len++;
+      j='0';
+      for(i=k;i>k-len;i--)a[i]=j++;
+      if(j>'9'+1){puts("-1");return;}
     }
   }
-  printf("%lld",i-1);
+  puts(a+k-len+1);
 }
