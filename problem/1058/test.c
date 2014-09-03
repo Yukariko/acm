@@ -27,7 +27,7 @@ main()
       }
     }
     int s=0;
-    for(j=1;j<=n;j++)s+=friend[i][j];
+    for(j=1;j<=n;j++)s+=friend2[i][j];
     max=max<s?s:max;
   }
   printf("%d",max);
