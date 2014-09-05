@@ -2,32 +2,27 @@ main()
 {
   int n;
   scanf("%d",&n);
-  int grade[2][6]={};
-  for(;n--;)
+  int grade[100001][2]={};
+  int i,j,k;
+  for(i=0;i<n;i++)
   {
     int p,q;
-    scanf("%d%d",&p,&q);
-    grade[0][p]++;
-    grade[1][q]++;
+    scanf("%d%d",&grade[i][0],&grade[i][1]);
   }
-  int max=1;
-  int i;
-  for(i=1;i<6;i++)
+  int max=0,s;
+  for(i=1;i<=5;i++)
   {
-    max=grade[0][max]<grade[0][i]?i:max;
+    s=0;
+    for(j=0;j<n;j++)
+    {
+      if(grade[j][0]==i||grade[j][1]==i)s++;
+      else s=0;
+      if(max<s)
+      {
+        max=s;
+        k=i;
+      }
+    }
   }
-  int max2=1;
-  for(i=1;i<6;i++)
-  {
-    max2=grade[1][max]<grade[1][i]?i:max;
-  }
-  if(grade[0][max]>grade[1][max2])
-  {
-    max2=grade[0][max];
-  }
-  else
-  {
-    max2=grade[1][max2];
-  }
-  printf("%d %d",max2,max);
+  printf("%d %d",max,k);
 }
