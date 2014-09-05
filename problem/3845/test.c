@@ -5,7 +5,7 @@ main()
   float w;
   for(;scanf("%d%d%f",&nx,&ny,&w),nx;)
   {
-    int i,j,k;
+    int i;
     float x[nx];
     float y[ny];
     for(i=0;i<nx;scanf("%f",x+i++));
