@@ -14,7 +14,7 @@ int k;
 f(i,n)
 {
   int p,q;
-  if(i>n/2){q=atoi(a);if(q<=100030001&&isPrime(q)){palin[k++]=q;}return;}
+  if(i>n/2){q=atoi(a);if(q<=100000001&&isPrime(q)){palin[k++]=q;}return;}
   if(i){a[i]='0';a[n-i]='0';f(i+1,n);}
   for(p=1;p<=9;p++)
   {
@@ -26,19 +26,20 @@ f(i,n)
 main()
 {
   int i,j,p=0;
-  char che[11001]={};
-  for(i=2;i<=11000;i++)
+  char che[10001]={};
+  for(i=2;i<=10000;i++)
   {
     if(!che[i])
     {
       prime[p++]=i;
-      for(j=i*i;j<=11000;j+=i)che[j]=1;
+      for(j=i*i;j<=10000;j+=i)che[j]=1;
     }
   }
-  for(i=0;i<=8;i++)
+  for(i=0;i<=7;i++)
   {
     f(0,i);
   }
+  palin[k]=100000001;
   int a,b;
   scanf("%d%d",&a,&b);
   for(i=0;palin[i]<a;i++);
