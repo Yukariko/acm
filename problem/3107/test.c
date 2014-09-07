@@ -1,0 +1,39 @@
+main()
+{
+  char a[40];
+  char b[40]={};
+  gets(a);
+  int i,j,k,t,s;
+  for(i=s=0;a[i];i++)s+=a[i]==':';
+  k=j=0;
+  for(i=0;a[i];i++)
+  {
+    if(a[i]==':')
+    {
+      if(i)
+      {
+        if(i-j==0)
+        {
+          if(i==1||a[i+1]==0)s--;
+          for(t=0;t<8-s;t++)
+          {
+            b[k++]='0';b[k++]='0';b[k++]='0';b[k++]='0';b[k++]=':';
+          }
+        }
+        else
+        {
+          for(t=0;t<4-i+j;t++)b[k++]='0';
+          for(;j<=i;j++)b[k++]=a[j];
+        }
+      }
+      j=i+1;
+    }
+  }
+  if(i-j)
+  {
+    for(t=0;t<4-i+j;t++)b[k++]='0';
+    for(;j<=i;j++)b[k++]=a[j];    
+  }
+  if(b[39]==':')b[39]=0;
+  puts(b);
+}
