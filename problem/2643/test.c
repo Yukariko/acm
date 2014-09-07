@@ -6,9 +6,8 @@ binary_search(int *arr,int size,int num)
    while(start<=end)
    {
      mid=(end+start)/2;
-     if(num>arr[mid])start=mid+1;
+     if(num>=arr[mid])start=mid+1;
      else if(num<arr[mid])end=mid-1;
-     else return start=mid+1;
    }
    return start;
 }
@@ -43,9 +42,5 @@ main()
     if(p[i].w<p[i].h){t=p[i].w;p[i].w=p[i].h;p[i].h=t;}
   }
   qsort(p,n,sizeof(paper),cmp);
-  puts("---");
-  for(i=0;i<n;i++)printf("%d %d\n",p[i].w,p[i].h);
-  int min,max=0,s;
-  max=LIS(p,n);
-  printf("%d",max);
+  printf("%d",LIS(p,n));
 }
