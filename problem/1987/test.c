@@ -1,14 +1,14 @@
 char map[21][21];
 int r,c;
 int max;
-f(int i,int j,int k,char *arr)
+char a[99];
+f(int i,int j,int k)
 {
-  if(i<0||j<0||i>=r||j>=c||arr[map[i][j]-'A'])return;
-  char a[30]={};
+  if(i<0||j<0||i>=r||j>=c||a[map[i][j]])return;
   int p;
-  for(p=0;p<26;p++)a[p]=arr[p];
-  a[map[i][j]-'A']=1;
-  f(i-1,j,k+1,a);f(i+1,j,k+1,a);f(i,j-1,k+1,a);f(i,j+1,k+1,a);
+  a[map[i][j]]=1;
+  f(i-1,j,k+1);f(i+1,j,k+1);f(i,j-1,k+1);f(i,j+1,k+1);
+  a[map[i][j]]=0;
   max=max<k?k:max;
 }
 main()
@@ -16,7 +16,6 @@ main()
   scanf("%d%d ",&r,&c);
   int i;
   for(i=0;i<r;i++)gets(map[i]);
-  char a[30]={};
-  f(0,0,1,a);
+  f(0,0,1);
   printf("%d",max);
 }
