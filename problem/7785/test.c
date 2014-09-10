@@ -3,7 +3,6 @@ char a[100001][12];
 main()
 {
   int n;
-  
   scanf("%d ",&n);
   int i,j,k;
   for(i=0;i<n;i++)gets(a[i]);
