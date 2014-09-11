@@ -1,54 +1,148 @@
-#define MAX_QUEUE 1
-typedef struct coord{int x,y;} DATA;
-typedef struct queue{DATA data;struct queue *next;}queue;
-queue *head[MAX_QUEUE],*tail[MAX_QUEUE];
-void push(int index,DATA val)
+typedef struct pair{int x,y,w;} qData;
+typedef struct LinkedList{
+  qData data;
+  struct LinkedList *next;
+} LinkedList;
+typedef struct Queue{
+  LinkedList *head;
+  LinkedList *tail;
+  int count;
+} Queue;
+Queue *CreateQueue()
 {
-  tail[index]->data=val;
-  tail[index]->next=(queue *)malloc(sizeof(queue));
-  tail[index]=tail[index]->next;
-  tail[index]->next=0;
+  Queue *q = (Queue *)malloc(sizeof(Queue));
+  q->head=(LinkedList *)malloc(sizeof(LinkedList));
+  q->head->next=0;
+  q->tail=q->head;
+  q->count=0;
+  return q;
 }
-DATA pop(int index)
+void qPush(Queue *q,qData data)
 {
-  queue *p=head[index];
-  DATA result=head[index]->data;
-  head[index]=head[index]->next;
+  q->tail->data=data;
+  q->tail->next=(LinkedList *)malloc(sizeof(LinkedList));
+  q->tail=q->tail->next;
+  q->tail->next=0;
+  q->count++;
+}
+qData qPop(Queue *q)
+{
+  qData data=q->head->data;
+  LinkedList *p=q->head;
+  q->head=q->head->next;
+  q->count--;
   free(p);
-  return result;
+  return data;
 }
-void init(int index)
-{
-  head[index]=(queue *)malloc(sizeof(queue));
-  head[index]->next=0;
-  tail[index]=head[index];
-}
-int point[51][51];
-char visit[51][51];
-char map[51][51];
-char mask[51][51];
+int point[52][52];
+char visit[52][52];
+char map[52][52];
+char mask[52][52];
 int n;
-f(i,j,s)
+isOK(i,j)
 {
-  if(map[i][j]==0)return;
-  if(visit[i][j])return;
-  visit[i][j]=1;
-  point[i][j]=s;
-  if(i<n&&map[i+1][j])f(i+1,j,s);
-  if(i>1&&map[i-1][j])f(i-1,j,s);
-  if(j<n&&map[i][j+1])f(i,j+1,s);
-  if(j>1&&map[i][j-1])f(i,j-1,s);
+  if(i>n||i<1||j>n||j<1)return 0;
+  if(visit[i][j]==1)return 0;
+  return 1;
 }
-clear()
+prim()
 {
-  int i,j;
-  for(i=1;i<=n;i++)for(j=1;j<=n;j++)visit[i][j]=0;
+  Queue *q=CreateQueue();
+  LinkedList *l;
+  qData data;
+  data.x=data.y=1;
+  data.w=0;
+  visit[1][1]=1;
+  qPush(q,data);
+  
+  int i,j,k,m;
+  int x,y,w;
+  int res=10001;
+  for(i=n*n-1;i;)
+  {
+    k=q->count;
+    l=q->head;
+    m=10001;
+    for(j=0;j<k;j++)
+    {
+      x=l->data.x;
+      y=l->data.y;
+      w=l->data.w;
+      if(isOK(y-1,x)&&w+!map[y-1][x]<m)
+      {
+        m=w+!map[y-1][x];
+      }
+      if(isOK(y+1,x)&&w+!map[y+1][x]<m)
+      {
+        m=w+!map[y+1][x];
+      }
+      if(isOK(y,x-1)&&w+!map[y][x-1]<m)
+      {
+        m=w+!map[y][x-1];
+      }
+      if(isOK(y,x+1)&&w+!map[y][x+1]<m)
+      {
+        m=w+!map[y][x+1];
+      }
+      l=l->next;
+    }
+    l=q->head;
+    for(j=0;j<k;j++)
+    {
+      x=l->data.x;
+      y=l->data.y;
+      w=l->data.w;
+      data.w=m;
+      if(isOK(y-1,x)&&w+!map[y-1][x]==m)
+      {
+        data.y=y-1;
+        data.x=x;
+        visit[y-1][x]=1;
+        i--;
+        qPush(q,data);
+      }
+      if(isOK(y+1,x)&&w+!map[y+1][x]==m)
+      {
+        data.y=y+1;
+        data.x=x;
+        visit[y+1][x]=1;
+        i--;
+        qPush(q,data);
+      }
+      if(isOK(y,x-1)&&w+!map[y][x-1]==m)
+      {
+        data.y=y;
+        data.x=x-1;
+        visit[y][x-1]=1;
+        i--;
+        qPush(q,data);
+      }
+      if(isOK(y,x+1)&&w+!map[y][x+1]==m)
+      {
+        data.y=y;
+        data.x=x+1;
+        visit[y][x+1]=1;
+        i--;
+        qPush(q,data);
+      }
+      l=l->next;
+    }
+  }
+  k=q->count;
+  l=q->head;
+  for(j=0;j<k;j++)
+  {
+    x=l->data.x;
+    y=l->data.y;
+    w=l->data.w;
+    if(x==n&&y==n)res=res>w?w:res;
+    l=l->next;
+  }
+  return res;
 }
-#define min(a,b) (a>b?b:a)
 main()
 {
   int i,j;
-  init(0);
   scanf("%d",&n);
   for(i=1;i<=n;i++)
   {
@@ -56,66 +150,7 @@ main()
     {
       scanf(" %c",&map[i][j]);
       map[i][j]-=48;
-      point[i][j]=10000;
     }
   }
-  DATA t,pick;
-  int s,k,p,w;
-  t.x=1;t.y=1;
-  push(0,t);
-  point[1][1]=0;
-  for(k=1;k;)
-  {
-    for(p=k,k=0;p--;)
-    {
-      pick=pop(0);
-      if(pick.x<n)
-      {
-        if(map[pick.x+1][pick.y])
-        {
-          w=0;
-        }
-        else
-        {
-          w=1;
-        }
-        if(point[pick.x+1][pick.y]>point[pick.x][pick.y]+w)
-        {
-          point[pick.x+1][pick.y]=point[pick.x][pick.y]+w;
-          if(w==0)
-          {
-            clear();
-            f(pick.x+1,pick.y,point[pick.x+1][pick.y]);
-          }
-        }
-        t.x=pick.x+1;t.y=pick.y;
-        if(!mask[pick.x+1][pick.y]){push(0,t);k++;}
-        mask[pick.x+1][pick.y]=1;
-      }
-      if(pick.y<n)
-      {
-        if(map[pick.x][pick.y+1])
-        {
-          w=0;
-        }
-        else
-        {
-          w=1;
-        }
-        if(point[pick.x][pick.y+1]>point[pick.x][pick.y]+w)
-        {
-          point[pick.x][pick.y+1]=point[pick.x][pick.y]+w;
-          if(w==0)
-          {
-            clear();
-            f(pick.x,pick.y+1,point[pick.x][pick.y+1]);
-          }
-        }
-        t.x=pick.x;t.y=pick.y+1;
-        if(!mask[pick.x][pick.y+1]){push(0,t);k++;}
-        mask[pick.x][pick.y+1]=1;
-      }
-    }
-  }
-  printf("%d",point[n][n]);
+  printf("%d",prim());
 }
