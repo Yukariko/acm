@@ -16,53 +16,36 @@ main()
       scanf("%d%d",&mine[i].x,&mine[i].y);
       map[mine[i].x][mine[i].y]=t;
     }
-    int j,max=0,s,x,y,ex,ey;
+    int j,k,max=0,s,x,y,ex,ey,ek;
     for(i=0;i<n;i++)
     {
-      s=0;
-      ex=MIN(mine[i].x+10,10000);
-      ey=MIN(mine[i].y+10,10000);
-      for(x=mine[i].x;x<=ex;x++)
+      ek=MIN(mine[i].x+10,10000);
+      k=MAX(mine[i].x-10,0);
+      for(;k<=ek;k++)
       {
-        for(y=mine[i].y;y<=ey;y++)
+        s=0;
+        ex=MIN(k+10,10000);
+        ey=MIN(mine[i].y+10,10000);
+        for(x=k;x<=ex;x++)
         {
-          if(map[x][y]==t)s++;
+          for(y=mine[i].y;y<=ey;y++)
+          {
+            if(map[x][y]==t)s++;
+          }
         }
-      }
-      max=max<s?s:max;
-      s=0;
-      ex=MAX(mine[i].x-10,0);
-      ey=MIN(mine[i].y+10,10000);
-      for(x=mine[i].x;x>=ex;x--)
-      {
-        for(y=mine[i].y;y<=ey;y++)
+        max=max<s?s:max;
+        s=0;
+        ex=MAX(k-10,0);
+        ey=MIN(mine[i].y+10,10000);
+        for(x=k;x>=ex;x--)
         {
-          if(map[x][y]==t)s++;
+          for(y=mine[i].y;y<=ey;y++)
+          {
+            if(map[x][y]==t)s++;
+          }
         }
+        max=max<s?s:max;
       }
-      max=max<s?s:max;
-      s=0;
-      ex=MIN(mine[i].x+10,10000);
-      ey=MAX(mine[i].y-10,0);
-      for(x=mine[i].x;x<=ex;x++)
-      {
-        for(y=mine[i].y;y>=ey;y--)
-        {
-          if(map[x][y]==t)s++;
-        }
-      }
-      max=max<s?s:max;
-      s=0;
-      ex=MAX(mine[i].x-10,0);
-      ey=MAX(mine[i].y-10,0);
-      for(x=mine[i].x;x>=ex;x--)
-      {
-        for(y=mine[i].y;y>=ey;y--)
-        {
-          if(map[x][y]==t)s++;
-        }
-      }
-      max=max<s?s:max;
     }
     printf("%d\n",max);
   }
