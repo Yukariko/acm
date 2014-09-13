@@ -35,11 +35,11 @@ main()
         }
         max=max<s?s:max;
         s=0;
-        ex=MAX(k-10,0);
-        ey=MIN(mine[i].y+10,10000);
-        for(x=k;x>=ex;x--)
+        ex=MIN(k+10,10000);
+        ey=MIN(mine[i].y-10,10000);
+        for(x=k;x<=ex;x++)
         {
-          for(y=mine[i].y;y<=ey;y++)
+          for(y=mine[i].y;y>=ey;y--)
           {
             if(map[x][y]==t)s++;
           }
