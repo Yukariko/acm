@@ -1,78 +1,51 @@
-typedef int DATA;
-typedef struct queue{DATA data;struct queue *next;}queue;
-queue *head,*tail;
-push(DATA val)
+typedef struct edge{int x,y,w;}Edge;
+cmp(Edge *a,Edge *b){return a->w>b->w?1:a->w<b->w?-1:0;}
+int *jump;
+int *r;
+find(n)
 {
-  tail->data=val;
-  tail->next=(queue *)malloc(sizeof(queue));
-  tail=tail->next;
-  tail->data=0;
-  tail->next=0;
+  if(n==jump[n])return n;
+  return jump[n]=find(jump[n]);
 }
-DATA pop()
+merge(x,y)
 {
-  queue *p=head;
-  DATA result=head->data;
-  head=head->next;
-  free(p);
-  return result;
-}
-int isEmpty()
-{
-  return !head;
-}
-void init()
-{
-  head=(queue *)malloc(sizeof(queue));
-  head->data=0;
-  head->next=0;
-  tail=head;
-}
-queue *find(DATA val)
-{
-  queue *p=head;
-  for(;p;p=p->next)if(p->data==val)return p;
-  return 0;
-}
-int network[1001][1001];
-int visited[1001];
-int N,M;
-int i;
-prim()
-{
-  int i,j,s,m;
-  int x,y;
-  int result=0;
-  queue *p;
-  init();
-  visited[1]=1;
-  s=1;
-  push(1);
-  for(;;)
+  x=find(x);
+  y=find(y);
+  if(r[x]<r[y])jump[x]=y;
+  else
   {
-    m=987654321;
-    for(p=head;p;p=p->next)
-    {
-      for(i=1;i<=N;i++)
-      {
-        if(!visited[i]&&network[p->data][i]&&m>network[p->data][i])
-        {
-          m=network[p->data][i];
-          x=i;
-          y=p->data;
-        }
-      }
-    }
-    result+=network[x][y];
-    visited[x]=1;
-    s++;
-    if(!find(x))push(x);
-    if(s==N)break;
-  } 
-  return result;
+    jump[y]=x;
+    if(r[x]==r[y])r[x]++;
+  }
 }
-main(x,y,m)
+kruskal(Edge *edge, int n, int m)
 {
-  for(scanf("%d%d",&N,&M);i<M;i++){scanf("%d%d%d",&x,&y,&m);network[x][y]=m;network[y][x]=m;}
-  printf("%d",prim());
+  int i;
+  long long res=0;
+  
+  qsort(edge,m,sizeof(Edge),cmp);
+  jump=malloc(sizeof(int)*n);
+  r=malloc(sizeof(int)*m);
+  
+  for(i=1;i<=n;i++)jump[i]=i;
+  
+  for(i=0;i<m;i++)
+  {
+    int x=edge[i].x,y=edge[i].y;
+    if(find(x)!=find(y))
+    {
+      merge(x,y);
+      res+=edge[i].w;
+    }
+  }
+  return res;
+}
+main()
+{
+  int n,m;
+  Edge p[100001];
+  scanf("%d%d",&n,&m);
+  int i;
+  for(i=0;i<m;i++)scanf("%d%d%d",&p[i].x,&p[i].y,&p[i].w);
+  printf("%d",kruskal(p,n,m));
 }
