@@ -1,23 +1,30 @@
-a[501][501];b[501][501];i;j;c;n;m;
-f(i,j)
+int m,n;
+int map[501][501];
+char visit[501][501];
+cf(x,y,dx,dy);
+f(x,y)
 {
-  if(j>0&&a[i][j]<a[i][j-1])f(i,j-1);
-  if(j<n-1&&a[i][j]<a[i][j+1])f(i,j+1);
-  if(i>0&&a[i][j]<a[i-1][j])f(i-1,j);
-  if(i<m-1&&a[i][j]<a[i+1][j])f(i+1,j);
-  if(i==0&&j==0)c++;
+  int i;
+  visit[x][y]++;
+  if(visit[x][y]>1)return visit[x][y]-1;
+  if(x==m-1&&y==n-1)return 1;
+  return cf(x,y,-1,0)+cf(x,y,1,0)+cf(x,y,0,-1)+cf(x,y,0,1);
 }
 main()
 {
-  for(scanf("%d%d",&m,&n);i<m;i++)for(j=0;j<n;j++)scanf("%d",&a[i][j]);
-  for(i=0;i<m;i++,puts(""))for(j=0;j<n;j++)
+  scanf("%d%d",&m,&n);
+  int i,j;
+  for(i=0;i<m;i++)
   {
-    if(j>0&&a[i][j]>a[i][j-1])b[i][j]++;
-    if(j<n-1&&a[i][j]>a[i][j+1])b[i][j]++;
-    if(i>0&&a[i][j]>a[i-1][j])b[i][j]++;
-    if(i<m-1&&a[i][j]>a[i+1][j])b[i][j]++;
-    printf("%d ",b[i][j]);
+    for(j=0;j<n;j++)
+    {
+      scanf("%d",&map[i][j]);
+    }
   }
-  f(m-1,n-1);printf("%d",c);
-  while(1);
+  printf("%d",f(0,0));
+}
+cf(x,y,dx,dy)
+{
+  if(x+dx<0||y+dy<0||x+dx>=m||y+dy>=n||map[x][y]<=map[x+dx][y+dy])return 0;
+  return f(x+dx,y+dy);
 }
