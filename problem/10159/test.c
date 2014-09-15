@@ -1,46 +1,35 @@
-int a[101][101];
-int visit[101][101];
+char tall[101][101];
+char visit[2][101];
 int n,m;
-int c;
-f(x,y,v)
+f(p,c)
 {
-  int i,j;
-  c++;
+  int i,t;
+  t=c==1;
+  if(visit[t][p])return;
+  visit[t][p]=1;
   for(i=1;i<=n;i++)
   {
-    if(visit[x][i]==0&&a[x][i]==v)
-    {
-      a[y][i]=v;
-      f(i,y,a[x][i]);
-    }
+    if(tall[p][i]==c)f(i,c);
   }
 }
 main()
 {
+  scanf("%d%d",&n,&m);
+  int i,j;
   int x,y;
-
-  for(scanf("%d%d",&n,&m);m--;)
+  for(i=0;i<m;i++)
   {
     scanf("%d%d",&x,&y);
-    if(!a[x][y])
-    {
-      a[x][y]=-1;
-      a[y][x]=1;
-    }
+    tall[y][x]=1;
+    tall[x][y]=-1;
   }
-  int i,j,s;
+  int c;
   for(i=1;i<=n;i++)
   {
-    f(i,i,1);
-    f(i,i,-1);
-  }
-  for(i=1;i<=n;i++)
-  {
-    s=n-1;
-    for(j=1;j<=n;j++)
-    {
-      if(a[i][j])s--;
-    }
-    printf("%d\n",s);
+    memset(visit,0,sizeof(visit));
+    f(i,1);f(i,-1);
+    c=0;
+    for(j=1;j<=n;j++)c+=visit[0][j]+visit[1][j];
+    printf("%d\n",n-c+1);
   }
 }
