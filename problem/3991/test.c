@@ -2,7 +2,7 @@ main()
 {
   int h,w,c;
   scanf("%d%d%d",&h,&w,&c);
-  int a[9];
+  int a[10];
   int i,j,k;
   for(i=1;i<=c;i++)scanf("%d",a+i);
   char map[11][11]={};
