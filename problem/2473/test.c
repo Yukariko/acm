@@ -1,43 +1,41 @@
-cmp(int *a,int *b){return *a>*b?1:*a<*b?-1:0;}
-int a[100001];
+cmp(long long *a,long long *b){return *a>*b?1:*a<*b?-1:0;}
+long long absl(long long n){return n>0?n:-n;}
+long long a[100001];
+long long sel[3],res[3];
+long long min=3000000001LL;
 int n;
-binary_search(k)
+binary_search(long long k,int start,int end)
 {
-  int start=0,end=n-1,mid;
+  int mid;
   while(start<=end)
   {
     mid=(start+end)/2;
-    if(a[mid]<k)start=mid+1;
-    else if(a[mid]>k)end=mid-1;
-    else return mid;
+    if(a[mid]+k<0)start=mid+1;
+    else end=mid-1;
+    if(absl(k+a[mid])<min)
+    {
+      min=absl(k+a[mid]);
+      res[0]=sel[0];
+      res[1]=sel[1];
+      res[2]=a[mid];
+    }
   }
-  return start;
 }
 main()
 {
   scanf("%d",&n);
-  int i,j;
-  for(i=0;i<n;i++)scanf("%d",a+i);
-  int min=1000000001;
-  int s[3],t,p;
-  qsort(a,n,4,cmp);
-  for(i=0;i<n;i++)
+  int i,k;
+  for(i=0;i<n;i++)scanf("%lld",a+i);
+  qsort(a,n,8,cmp);
+  for(k=0;k<n;k++)
   {
-    t=binary_search(-a[i]);
-    if(t<=i)t=i+1;
-    if(t>=n)t=n-1;
-    p=abs(a[t]+a[i]);
-    for(;t>i;t--)
+    sel[0]=a[k];
+    for(i=k+1;i<n-1;i++)
     {
-      if(abs(a[t]+a[i])<min)
-      {
-        min=abs(a[t]+a[i]);
-        s[0]=a[i];
-        s[1]=a[t];
-      }
-      else if(abs(a[t]+a[i])>p)break;
+      sel[1]=a[i];
+      binary_search(a[k]+a[i],i+1,n-1);
     }
-    if(a[i]>0)break;
   }
-  printf("%d %d",sa<sb?sa:sb,sa<sb?sb:sa);
+  qsort(res,3,8,cmp);
+  printf("%lld %lld %lld",res[0],res[1],res[2]);
 }
