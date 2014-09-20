@@ -29,8 +29,7 @@ main()
     {
       if((a[j]>='a'&&a[j]<='z')||a[j]=='\''||a[j]=='-'||(a[j]>='A'&&a[j]<='Z'))
       {
-        word[i][count[i]][k]=toupper(a[j]);
-        k++;
+        word[i][count[i]][k++]=toupper(a[j]);
       }
       else if(k){count[i]++;k=0;}
     }
