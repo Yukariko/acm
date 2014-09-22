@@ -1,9 +1,9 @@
 #define MIN(a,b) (a>b?b:a)
 #define MAX(a,b) (a<b?b:a)
 cmp(long long *a,long long *b){return *a>*b?1:*a<*b?-1:0;}
-long long arr[10001];
-long long s[10001];
-long long dp[10001][2];
+long long arr[20001];
+long long s[20001];
+long long dp[20001][2];
 int n,e,m,ck,size;
 find(long long p)
 {
@@ -16,6 +16,7 @@ f(p)
   long long a,b,c,k;
   for(k=2;p+k<e;k++)
   {
+    if((arr[p]-arr[p+1]+arr[p+k])%2)continue;
     b=(arr[p]-arr[p+1]+arr[p+k])/2;
     a=arr[p]-b;
     c=arr[p+1]-a;
@@ -54,7 +55,7 @@ main()
   }
   for(i=0;i<size;i++)
   {
-    if(dp[i][1]==3)s[m++]=dp[i][0];
+    if(dp[i][1]>=3)s[m++]=dp[i][0];
   }
   if(n!=m)return puts("Impossible"),0;
   qsort(s,m,8,cmp);
