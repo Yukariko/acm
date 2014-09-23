@@ -20,9 +20,7 @@ f(int p,long long s)
       }
     }
   }
-  //printf("%lld %lld %lld\n",s,k,s+k);
-  min=min>s+k?s+k:min;
-  if(p>=n/2+n%2)return;
+  if(k&&s)min=min>s+k?s+k:min;
   for(i=p;i<n;i++)
   {
     visit[i]=1;
@@ -30,9 +28,9 @@ f(int p,long long s)
     if(zero&&s==0)
     {
       for(j=0;j<zero/2;j++)t*=10;
-      f(p+1,t);
+      f(i+1,t);
     }
-    else f(p+1,s*10+a[i]);
+    else f(i+1,s*10+a[i]);
     visit[i]=0;
   }
 }
@@ -44,7 +42,7 @@ main()
     for(i=0;i<n;i++)scanf("%d",a+i);
     qsort(a,n,4,cmp);
     for(zero=i=0;i<n;i++){if(a[i]==0)zero++;else break;}
-    min=987654321000;
+    min=987654321;
     f(i,0);
     printf("%lld\n",min);
   }
