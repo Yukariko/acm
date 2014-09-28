@@ -1,53 +1,39 @@
-isPalin(char *a,int i,int j)
+#define MIN(a,b) (a>b?b:a)
+char a[2501];
+int len;
+isPalin(p,q)
 {
-  int p,q;
-  int len=j-i;
-  int mid=i+len/2;
-  if(len%2==0)
+  int l=q-p;
+  int i,j;
+  if(l%2==0)
   {
-    for(p=mid-1,q=mid;p>=i&&q<j;p--,q++)if(a[p]!=a[q])return 0;
+    i=p+l/2-1;
+    j=p+l/2;
+    for(;i>=p&&j<q;i--,j++)if(a[i]!=a[j])return 0;
   }
   else
   {
-    for(p=mid,q=mid;p>=i&&q<j;p--,q++)if(a[p]!=a[q])return 0;
+    i=p+l/2;
+    j=i;
+    for(;i>=p&&j<q;i--,j++)if(a[i]!=a[j])return 0;    
   }
   return 1;
 }
+int dp[2501];
 main()
 {
-  char a[2501];
-  int count[2501];
-  int len=strlen(gets(a));
-  int i,j,k,s=0;
-  for(k=i=0;a[i];i++)
+  len=strlen(gets(a));
+  int i,j,k;
+  for(i=1;i<=len;i++)
   {
-    for(j=len;j>i;j--)
+    for(j=0;j<i;j++)
     {
-      if(isPalin(a,i,j))break;
-    }
-    count[i]=j-i;
-  }
-  int max=0,m;
-  for(i=1;i<len;i++)
-  {
-    if(max+count[max]>i)
-    {
-      if(count[i]>count[max])
+      if(isPalin(j,i))
       {
-        for(j=i-1;j>max;j--)count[j]=0;
-        max=i;
-      }
-      else
-      {
-        count[i]=0;
+        if(dp[i])dp[i]=MIN(dp[j]+1,dp[i]);
+        else dp[i]=dp[j]+1;
       }
     }
-    else
-    {
-      for(j=max;j<i&&j+count[j]<=i;j++);
-      max=i;
-    }
   }
-  for(i=0;i<len;i++)if(count[i]){s++;printf("%d %c %d\n",i,a[i],count[i]);}
-  printf("%d",s);
+  printf("%d",dp[len]);
 }
