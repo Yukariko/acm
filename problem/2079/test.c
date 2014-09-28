@@ -1,36 +1,41 @@
 char a[2001];
+int len;
 isPalin(p,q)
 {
-  int len=q-p;
+  int l=q-p;
   int i,j;
-  if(len%2==0)
+  if(l%2==0)
   {
-    i=p+len/2-1;
-    j=p+len/2;
+    i=p+l/2-1;
+    j=p+l/2;
     for(;i>=p&&j<q;i--,j++)if(a[i]!=a[j])return 0;
   }
   else
   {
-    i=p+len/2;
+    i=p+l/2;
     j=i;
     for(;i>=p&&j<q;i--,j++)if(a[i]!=a[j])return 0;    
   }
   return 1;
 }
+int dp[2001];
+f(p)
+{
+  int i,j=p,t,min=2001;
+  if(p==len)return 0;
+  for(i=len;i>=j;i--)
+  {
+    if(isPalin(j,i+1))
+    {
+      if(dp[i+1])t=dp[i+1];
+      else dp[i+1]=t=1+f(i+1);
+      min=min>t?t:min;
+    }
+  }
+  return min;
+}
 main()
 {
-  int len=strlen(gets(a));
-  int i,j,k,s=0;
-  for(j=i=0;;)
-  {
-    for(i=len;i>=j;i--)
-    {
-      if(isPalin(j,i))break;
-    }
-//    printf("%d %d\n",j,i);
-    j=i;
-    s++;
-    if(i==len)break;
-  }
-  printf("%d",s);
+  len=strlen(gets(a));
+  printf("%d",f(0));
 }
