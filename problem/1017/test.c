@@ -1,15 +1,36 @@
+typedef struct pair{int x,y;}PAIR;
 cmp(int *a,int *b){return *a>*b?1:*a<*b?-1:0;}
-typedef struct pair{int x,y;}pair;
-char map[51][51];
+cmp2(PAIR *a,PAIR *b){return a->x>b->x?1:a->x<b->x?-1:0;}
 int a[51];
 int visit[51];
-pair p[2000];
+int jump[51];
+PAIR pair[2000];
 isPrime(n){int i;for(i=2;i*i<=n;i++)if(n%i==0)return 0;return 1;}
-int n;
+int n,k,bool;
+f(p,c)
+{
+  if(c==0){bool=1;return;}
+  if(p>=n)return;
+  int i;
+
+  if(visit[p]||jump[p]==-1){f(p+1,c);return;}
+  visit[p]=1;
+  for(i=jump[p];pair[i].x==p;i++)
+  {
+    if(visit[pair[i].y]==0)
+    {
+      visit[pair[i].y]=1;
+      f(p+1,c-2);
+      visit[pair[i].y]=0;
+    }
+    if(bool){visit[p]=0;return;}
+  }
+  visit[p]=0;
+}
 main()
 {
   scanf("%d",&n);
-  int i,j,k=0;
+  int i,j;
   for(i=0;i<n;scanf("%d",a+i++));
   for(i=0;i<n;i++)
   {
@@ -17,32 +38,26 @@ main()
     {
       if(isPrime(a[i]+a[j]))
       {
-        map[i][j]=map[j][i]=1;
+        pair[k].x=i;
+        pair[k].y=j;
+        k++;
       }
     }
   }
-  
+  qsort(pair,k,8,cmp2);
   int res[51];
   int s,t=0;
-  for(k=1;k<n;k++)
+  visit[0]=1;
+  for(i=0;i<n;i++)jump[i]=-1;
+  jump[0]=0;
+  for(i=1;i<k;i++)if(pair[i].x!=pair[i-1].x)jump[pair[i].x]=i;
+  for(i=0;pair[i].x==0;i++)
   {
-    if(map[0][k])
-    {
-      for(i=1;i<n;i++)
-      {
-        for(j=i+1;j<n;j++)
-        {
-          if(i==k||j==k)continue;
-          if(map[i][j])
-          {
-            visit[i]++;
-            visit[j]++;
-          }
-        }
-      }
-      for(s=i=0;i<n;i++){s+=visit[i]==0;visit[i]=0;}
-      if(s==2)res[t++]=a[k];
-    }
+    visit[pair[i].y]=1;
+    bool=0;
+    f(1,n-2);
+    if(bool)res[t++]=a[pair[i].y];
+    visit[pair[i].y]=0; 
   }
   if(t==0)puts("-1");
   else
