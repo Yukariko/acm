@@ -1,36 +1,26 @@
 int n;
-char word[26][101];
-char alpha[26];
+int test[26];
 int visit[26];
 int count;
 f(p,c)
 {
-  if(c==0){count++;}
-  int i,j,t;
-  for(i=p;i<n;i++)
+  if(c==67108863)count++;
+  for(int i=p;i<n;i++)
   {
-    t=0;
-    for(j=0;word[i][j];j++)
-    {
-      t+=alpha[word[i][j]]++==0;
-    }
     visit[i]=1;
-    f(i+1,c-t);
+    f(i+1,c|test[i]);
     visit[i]=0;
-    for(j=0;word[i][j];j++)
-    {
-      alpha[word[i][j]]--;
-    }
   }
 }
 main()
 {
   scanf("%d ",&n);
-  int i,j,k,s;
-  for(i=0;i<n;i++)
+  for(int i=0;i<n;i++)
   {
-    gets(word[i]);
+    char word[101];
+    gets(word);
+    for(int j=0;word[j];j++)test[i]|=1<<(word[j]-'a');
   }
-  f(0,26);
+  f(0,0);
   printf("%d",count);
 }
