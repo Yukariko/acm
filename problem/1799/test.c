@@ -15,18 +15,19 @@ check(p,q,c)
   int i,j;
   if(c==0)
   {
-    for(i=p,j=q;i>=0&&j>=0;i--,j--)chess[i][j]|=2;
-    for(i=p,j=q;i<n&&j<n;i++,j++)chess[i][j]|=2;
-    for(i=p,j=q;i>=0&&j<n;i--,j++)chess[i][j]|=2;
-    for(i=p,j=q;i<n&&j>=0;i++,j--)chess[i][j]|=2;
+    for(i=p,j=q;i>=0&&j>=0;i--,j--)chess[i][j]+=2;
+    for(i=p,j=q;i<n&&j<n;i++,j++)chess[i][j]+=2;
+    for(i=p,j=q;i>=0&&j<n;i--,j++)chess[i][j]+=2;
+    for(i=p,j=q;i<n&&j>=0;i++,j--)chess[i][j]+=2;
   }
   else
   {
-    for(i=p,j=q;i>=0&&j>=0;i--,j--)chess[i][j]&=1;
-    for(i=p,j=q;i<n&&j<n;i++,j++)chess[i][j]&=1;
-    for(i=p,j=q;i>=0&&j<n;i--,j++)chess[i][j]&=1;
-    for(i=p,j=q;i<n&&j>=0;i++,j--)chess[i][j]&=1;    
+    for(i=p,j=q;i>=0&&j>=0;i--,j--)chess[i][j]-=2;
+    for(i=p,j=q;i<n&&j<n;i++,j++)chess[i][j]-=2;
+    for(i=p,j=q;i>=0&&j<n;i--,j++)chess[i][j]-=2;
+    for(i=p,j=q;i<n&&j>=0;i++,j--)chess[i][j]-=2;    
   }
+
   return 1;
 }
 f(p,q,c)
@@ -36,7 +37,7 @@ f(p,q,c)
     max=max<c?c:max;
     return;
   }
-  int i,j=0;
+  int i;
   for(i=q;i<n;i++)
   {
     if(chess[p][i]==1)
@@ -45,10 +46,10 @@ f(p,q,c)
       check(p,i,0);
       f(p,i+1,c+1);
       check(p,i,1);
-      j=1;
+      return;
     }
   }
-  if(j==0)f(p+1,0,c);
+  f(p+1,0,c);
 }
 main()
 {
