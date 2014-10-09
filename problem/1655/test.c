@@ -47,54 +47,17 @@ int pFind(Pack *p,int pos)
   }
   return -1;
 }
-int pCount(Pack *p,int pos)
-{
-  int i,k=pos/p->packWidth,s=0;
-  for(i=p->min/p->packWidth;i<k;i++)
-  {
-    s += p->pack[i];
-  }
-  i*=p->packWidth;
-  k=pos;
-  for(;i<k;i++)
-  {
-    s+=p->arr[i];
-  }
-  return s;
-}
-void pFree(Pack *p)
-{
-  free(p->arr);
-  free(p->pack);
-  free(p);
-}
+
 main()
 {
-  int t;
-  int b[100001];
-  for(scanf("%d",&t);t--;)
+  int n;
+  int i,j,k,l,mid;
+  scanf("%d",&n);
+  Pack *p=CreatePack(20000,100);
+  for(i=1;i<=n;i++)
   {
-    int n,m;
-    Pack *p = CreatePack(200000,500);
-      
-    scanf("%d%d",&n,&m);
-    int i,j,k,s=100000;
-    
-    for(i=1;i<=n;i++)
-    {
-	  pInsert(p,s+i);
-      b[i]=s+i;
-    }
-    for(i=0;i<m;i++)
-    {
-      scanf("%d",&k);
-      printf("%d ",pCount(p,b[k]));
-      pDelete(p,b[k]);
-      b[k]=s--;
-      pInsert(p,b[k]);
-    }
-    puts("");
-    
-    pFree(p); 
+    scanf("%d",&k);
+    pInsert(p,k+10000);
+    printf("%d\n",pFind(p,i/2+i%2)-10000);
   }
 }
