@@ -4,17 +4,25 @@ main()
   int n;
   scanf("%d",&n);
   int a[10001];
-  int i;
+  int i,j,k;
   for(i=0;i<n;i++)scanf("%d",a+i);
   qsort(a,n,4,cmp);
-  int max=0,s=0;
-  for(i=0;i<n-1;i++)
+  int min=5,s;
+  for(i=0;i<n;i++)
   {
-    if(a[i]+1==a[i+1])s++;
-    else s=0;
-    max=max<s?s:max;
+    int ck[5]={};
+    s=5;
+    for(j=0;j<5&&i+j<n;j++)
+    {
+      k=a[i+j]-a[i];
+      if(k>=0 && k<5 && ck[k] == 0)
+      {
+        ck[k]=1;
+        s--;
+      }
+      else break;
+    }
+    min=min>s?s:min;
   }
-  int min=5-max-1;
-  
-  printf("%d",max>=4?0:min);
+  printf("%d",min);
 }
