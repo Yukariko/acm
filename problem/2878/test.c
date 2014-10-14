@@ -141,11 +141,11 @@ main()
   for(;M;)
   {
     k=hDelete(heap);
-    if(k>div)diff=k-div;
+    if(k>div)diff=div;
     else
     {
       //div=s/M;
-      diff=k>div?k-div:1;
+      diff=1;
     }
     if(diff>M)diff=M;
     k-=diff;
