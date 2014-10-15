@@ -1,13 +1,31 @@
-char a[9];
-int i,k,reverse;
-main(n)
+typedef char bool;
+int n;
+bool find;
+char res[101];
+f(p,s)
 {
-  for(gets(a);~scanf("%d",&n);reverse=0)
+  s%=n;
+  if(find)return;
+  if(s==0)
   {
-    for(i=1;i<=n;i*=10)reverse=reverse*10+n/i%10;
-    n+=reverse;
-    k=sprintf(a,"%d",n);
-    for(i=k/2-!(k%2),k=k/2;i>=0&&a[i]==a[k];i--)k++;
-    puts(i>=0?"NO":"YES");
+    find=1;
+    res[p]=0;
+    return;
+  }
+  if(p>=100)return;
+  res[p]='1';
+  f(p+1,s*10+1);
+  if(find)return;
+  res[p]='0';
+  f(p+1,s*10);    
+}
+main()
+{
+  res[0]='1';
+  for(;scanf("%d",&n),n;)
+  {
+    find=0;
+    f(1,1);
+    puts(res);
   }
 }
