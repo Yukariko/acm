@@ -6,7 +6,6 @@ main()
   scanf("%d%d",&d1,&d2);
   for(;d1<=d2;d1++)
   {
-    
     for(i=0;i<d1;i++)
     {
       sel=4000020LL*i/d1;
