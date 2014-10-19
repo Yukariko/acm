@@ -1,22 +1,126 @@
-int a[1000001];
-int b[500001];
+const int ASC = 1;
+const int DESC = 2;
+typedef struct Pack{
+  int *arr;
+  int *pack;
+  int size;
+  int packWidth;
+  int packSize;
+  int min,max;
+}Pack;
+Pack *CreatePack(int size,int packWidth)
+{
+  Pack *p=(Pack *)malloc(sizeof(Pack));
+  p->arr=(int *)malloc(sizeof(int) * (size + 1));
+  p->pack=(int *)malloc(sizeof(int) * (size / packWidth + 2));
+  memset(p->arr,0,sizeof(int) * (size + 1));
+  memset(p->pack,0,sizeof(int) * (size / packWidth + 2));
+  p->size = size;
+  p->packWidth = packWidth;
+  p->packSize = size / packWidth + 1;
+  p->min = size + 1;
+  p->max = 0;
+  return p;
+}
+void pInsert(Pack *p,int pos)
+{
+  p->arr[pos]++;
+  p->pack[pos/p->packWidth]++;
+  p->min=p->min > pos ? pos : p->min;
+  p->max=p->max < pos ? pos : p->max;
+}
+void pDelete(Pack *p,int pos)
+{
+  p->pack[pos/p->packWidth] -= p->arr[pos];
+  p->arr[pos]=0;
+}
+int pFind(Pack *p,int pos)
+{
+  int i,k,s=0;
+  for(i=p->min/p->packWidth;i<=p->packSize;i++)
+  {
+    if(s + p->pack[i]>=pos)break;
+    s += p->pack[i];
+  }
+  i*=p->packWidth;
+  k=i+p->packWidth;
+  for(;i<k;i++)
+  {
+    s+=p->arr[i];
+    if(s>=pos)return i;
+  }
+  return -1;
+}
+int pCount(Pack *p,int pos, int option)
+{
+  int i,k=pos/p->packWidth,s=0;
+  if(option == ASC)
+  {
+    for(i=p->min/p->packWidth;i<k;i++)
+    {
+      s += p->pack[i];
+    }
+    i*=p->packWidth;
+    k=pos;
+    for(;i<k;i++)
+    {
+      s += p->arr[i];
+    }
+  }
+  else
+  {
+    for(i=p->packSize;i>=k;i--)
+    {
+      s += p->pack[i];
+    }
+    i=(i+1)*p->packWidth;
+    k=pos;
+    for(;i<=k;i++)
+    {
+      s -= p->arr[i];
+    }
+  }
+  return s;
+}
+void pFree(Pack *p)
+{
+  free(p->arr);
+  free(p->pack);
+  free(p);
+}
+
+int id[1000001];
 main()
 {
-  int n;
-  scanf("%d",&n);
-  int i,k;
-  for(i=1;i<=n;i++)
+  int N;
+  int i,k,diff,res=0;
+  scanf("%d",&N);
+  
+  Pack *pack = CreatePack(N,100);
+  
+  for(i=0;i<N;i++)
   {
     scanf("%d",&k);
-    a[k]=i;
+    id[k]=i;
   }
-  int s=0;
-  int max=0;
-  for(i=1;i<=n;i++)
+  for(i=0;i<N;i++)
   {
     scanf("%d",&k);
-    max=max<a[k]?a[k]:max;
-    s+=a[k]>i?a[k]-i:a[k]==i&&i<max?1:0;
+    diff = id[k]-i;
+    if(diff>0)
+    {
+      res+=pCount(pack,id[k],DESC);
+    }
+    else if(diff==0)
+    {
+      res+=pCount(pack,i,DESC);
+    }
+    else
+    {
+      res+=-pCount(pack,id[k],DESC)+pCount(pack,i,DESC);
+    }
+    pInsert(pack,id[k]<i?i:id[k]);
+    printf("%d\n",res);
   }
-  printf("%d",s);
+  printf("%d",res);
 }
