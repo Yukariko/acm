@@ -93,10 +93,11 @@ int id[1000001];
 main()
 {
   int N;
-  int i,k,diff,res=0;
+  int i,k,diff;
+  long long res=0;
   scanf("%d",&N);
   
-  Pack *pack = CreatePack(N,100);
+  Pack *pack = CreatePack(N,1000);
   
   for(i=0;i<N;i++)
   {
@@ -105,22 +106,9 @@ main()
   }
   for(i=0;i<N;i++)
   {
-    scanf("%d",&k);
-    diff = id[k]-i;
-    if(diff>0)
-    {
-      res+=pCount(pack,id[k],DESC);
-    }
-    else if(diff==0)
-    {
-      res+=pCount(pack,i,DESC);
-    }
-    else
-    {
-      res+=-pCount(pack,id[k],DESC)+pCount(pack,i,DESC);
-    }
-    pInsert(pack,id[k]<i?i:id[k]);
-    printf("%d\n",res);
+    scanf("%d",&k); 
+    res+=pCount(pack,id[k],DESC);
+    pInsert(pack,id[k]);
   }
-  printf("%d",res);
+  printf("%lld",res);
 }
