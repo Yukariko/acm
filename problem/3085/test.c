@@ -1,37 +1,55 @@
 #define MAX(a,b) (a>b?a:b)
 int n;
-numric(char c){return c=='Y'?0:c=='C'?1:c=='P'?2:3;}
-isOK(i,j){return i<0||j<0||i>=n||j>=n?0:1;}
-main()
+char map[51][51];
+numric(char c)
 {
-  char map[51][51];
-  scanf("%d ",&n);
-  int i,j,k;
-  for(i=0;i<n;i++)gets(map[i]);
-  int r[51][4]={};
-  int c[51][4]={};
-  int swapR[51][4]={};
-  int swapC[51][4]={};
+  return c=='Y'?0:c=='C'?1:c=='P'?2:c=='Z'?3:4;
+}
+getMax()
+{
+  int i,j,k,max=0;
+  int p,s;
   for(i=0;i<n;i++)
   {
     for(j=0;j<n;j++)
     {
       k=numric(map[i][j]);
-      r[i][k]++;
-      c[j][k]++;
-      if(isOK(i-1,j)&&map[i][j]!=map[i-1][j])swapR[i-1][k]=1;
-      if(isOK(i+1,j)&&map[i][j]!=map[i+1][j])swapR[i+1][k]=1;
-      if(isOK(i,j-1)&&map[i][j]!=map[i][j-1])swapC[j-1][k]=1;
-      if(isOK(i,j+1)&&map[i][j]!=map[i][j+1])swapC[j+1][k]=1;
+      s=0;
+      for(p=j;k==numric(map[i][p]);p++)s++;
+      max=MAX(max,s);
+      s=0;
+      for(p=i;k==numric(map[p][j]);p++)s++;
+      max=MAX(max,s);
     }
   }
-  int max=0;
+  return max;
+}
+main()
+{
+  char t;
+  scanf("%d ",&n);
+  int i,j,k;
+  for(i=0;i<n;i++)gets(map[i]);
+  int max;
+  max=getMax();
   for(i=0;i<n;i++)
   {
-    for(j=0;j<4;j++)
+    for(j=0;j<n;j++)
     {
-      max=MAX(max,r[i][j]+swapR[i][j]);
-      max=MAX(max,c[i][j]+swapC[i][j]);
+      if(j && map[i][j] != map[i][j-1])
+      {
+        t=map[i][j];map[i][j]=map[i][j-1];map[i][j-1]=t;
+        k=getMax();
+        max=MAX(max,k);
+        t=map[i][j];map[i][j]=map[i][j-1];map[i][j-1]=t;
+      }
+      if(i && map[i][j] != map[i-1][j])
+      {
+        t=map[i][j];map[i][j]=map[i-1][j];map[i-1][j]=t;
+        k=getMax();
+        max=MAX(max,k);
+        t=map[i][j];map[i][j]=map[i-1][j];map[i-1][j]=t;
+      }
     }
   }
   printf("%d",max);
