@@ -1,13 +1,12 @@
-cmp(long long *p,long long *q)
+cmp(int *p,int *q)
 {
   return *p > *q? 1: *p < *q? -1: 0;
 }
 int N;
 int seq[10001];
-f(long long div)
+f(div)
 {
-  int i;
-  long long sum;
+  int i,sum;
   for(sum=i=0;i<N;i++)
   {
     sum+=seq[i];
@@ -25,11 +24,11 @@ f(long long div)
 main()
 {
   int T;
-  long long divisor[1001];
-  int i,j,k;
+  int divisor[101];
+  int i,j;
   for(scanf("%d",&T);T--;)
   {
-    long long n,sum=0;
+    int n,sum=0;
     scanf("%d",&N);
     for(i=0;i<N;i++)
     {
@@ -45,16 +44,16 @@ main()
         if(n!=sum/n)divisor[j++]=sum/n;
       }
     }
-    qsort(divisor,j,8,cmp);
+    qsort(divisor,j,4,cmp);
     for(i=0;i<j;i++)
     {
       if(f(divisor[i]))
       {
-        printf("%lld\n",divisor[i]);
+        printf("%d\n",divisor[i]);
         break;
       }
     }
-    if(i==j)printf("%lld\n",sum);
+    if(i==j)printf("%d\n",sum);
   }
 }
 
