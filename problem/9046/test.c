@@ -25,4 +25,3 @@ main()
     printf("%c\n",res);
   }
 }
-
