@@ -51,9 +51,9 @@ void DownHeap(Heap *h, int i)
   hDATA t;
   l=hLeftChild(h,i);
   r=hRightChild(h,i);
-  if(l!=-1&&h->compare(h->arr[l],h->arr[i]))max=l;
+  if(l!=-1&&hMaxCompare(h->arr[l],h->arr[i]))max=l;
   else max=i;
-  if(r!=-1&&h->compare(h->arr[r],h->arr[max]))max=r;
+  if(r!=-1&&hMaxCompare(h->arr[r],h->arr[max]))max=r;
   if(max!=i)
   {
     t=h->arr[i];
@@ -66,7 +66,7 @@ void UpHeap(Heap *h, int i)
 {
   hDATA data=h->arr[i];
   int p;
-  for(p=hParent(h,i);p!=-1&&h->compare(data,h->arr[p]);p=hParent(h,i))
+  for(p=hParent(h,i);p!=-1&&hMaxCompare(data,h->arr[p]);p=hParent(h,i))
   {
     h->arr[i]=h->arr[p];
     i=p;
@@ -123,41 +123,72 @@ void BuildHeap(Heap *h,hDATA A[], int n)
   h->count=n;
   for(i=(n-1)/2;i>=0;i--)DownHeap(h,i);
 }
-#define MIN(a,b) (a>b?b:a)
+int M,N;
+int a[100001];
+bSearch(max)
+{
+  int start,mid,end;
+  long long s;
+  
+  start = 1;
+  end = max;
+  for(;start<=end;)
+  {
+    mid = (start + end)/2;
+    
+    s=0;
+    for(int i=0;i<N;i++)
+    {
+      if(mid < a[i]) s+= a[i]-mid;
+    }
+    if(s > M) start = mid + 1;
+    else if (s < M) end = mid - 1;
+    else break;
+  }
+  return mid;
+}
+
 main()
 {
-  int M,N;
-  long long k,s,div,diff;
-  Heap *heap = CreateHeap(100001,MAX_HEAP);
-  int i;
+
+  int i,j,k;
+  int max=0;
+  
   scanf("%d%d",&M,&N);
-  for(s=i=0;i<N;i++)
+  for(i=0;i<N;i++)
   {
-    scanf("%lld",&k);
-    hInsert(heap,k);
-    s+=k;
+    scanf("%d",&a[i]);
+    max=max<a[i]?a[i]:max;
   }
-  div=s/N;
+  int mid = bSearch(max);
+  
+  for(i=0;i<N;i++)
+  {
+    if(a[i]>mid)
+    {
+      k = a[i]-mid;
+      M-=
+      a[i]=mid;
+    }
+    if(M==0)break;
+  }
+  Heap *heap = CreateHeap(N+1,MAX_HEAP);
+  for(i=0;i<N;i++)hInsert(heap,a[i]);
   for(;M;)
   {
-    k=hDelete(heap);
-    if(k>div)diff=div;
-    else
-    {
-      //div=s/M;
-      diff=1;
-    }
-    if(diff>M)diff=M;
-    k-=diff;
-    M-=diff;
-    s-=diff;
-    if(k)hInsert(heap,k);
+    k = hDelete(heap);
+    i = k - hTop(heap);
+    if(i<=0)i=1;
+    i = M < i ? M : i;
+    M-=i;
+    hInsert(heap,k-i);
   }
+  
   unsigned long long res=0;
-  for(;heap->count;)
+  for(i=0;i<heap->count;i++)
   {
-    k=hDelete(heap);
-    res+=k*k;
+    k = heap->arr[i];
+    res+=(unsigned long long)k*k;
   }
   printf("%llu",res);
 }
