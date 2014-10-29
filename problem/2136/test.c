@@ -1,20 +1,39 @@
-typedef struct ant{int pos;char move;}ant;
-cmp(ant *a,ant *b){return a->pos>b->pos?1:a->pos<b->pos?-1:0;}
+typedef struct Ant{ int len,pos,no; } Ant;
+cmp(Ant *p, Ant *q)
+{
+  return p->len > q->len ? 1: p->len < q->len ? -1: 0; 
+}
+cmp2(Ant *p, Ant *q)
+{
+  return p->pos > q->pos ? 1: p->pos < q->pos ? -1: 0;
+}
+Ant ant[100001];
+Ant sort_ant[100001];
 main()
 {
-  int l,n;
-  ant a[100001];
-  scanf("%d%d",&n,&l);
-  int i,j,k,max=0;
-  for(i=0;i<n;i++)
+  int L,N;
+  int i;
+  scanf("%d%d",&N,&L);
+  for(i=0;i<N;i++)
   {
-    scanf("%d",&a[i].pos);
-    if(a[i].pos>0){a[i].move='R'}
-    else {a[i].pos=-a[i].pos;a[i].move='L';}
-    j=a[i].move=='L'?a[i].pos:l-a[i].pos;
-    max=max<j?j:max;
+    scanf("%d",&ant[i].pos);
+    ant[i].no = i+1;
+    ant[i].len = ant[i].pos > 0? L - ant[i].pos : -ant[i].pos;
+    sort_ant[i] = ant[i];
+    if(ant[i].pos < 0) ant[i].pos = -ant[i].pos;
   }
-  qsort(a,n,sizeof(ant),cmp);
   
-  printf("%d %d",k+1,max);
+  qsort(sort_ant,N,sizeof(Ant),cmp);
+  qsort(ant,N,sizeof(Ant),cmp2);
+  
+  int start, end, pick;
+  start = 0;
+  end = N-1;
+  
+  for(i=0;i<N;i++)
+  {
+    if(sort_ant[i].pos > 0) pick = end--;
+    else pick = start++;
+  }
+  printf("%d %d",ant[pick].no,sort_ant[N-1].len);
 }
