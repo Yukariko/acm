@@ -1,69 +1,53 @@
-typedef struct ant{int pos;char move}ant;
+typedef struct Ant{ int len,pos; char no; } Ant;
+cmp(Ant *p, Ant *q)
+{
+  return p->len > q->len ? 1: p->len < q->len ? -1: 0; 
+}
+cmp2(Ant *p, Ant *q)
+{
+  return p->pos > q->pos ? 1: p->pos < q->pos ? -1: 0;
+}
+Ant ant[100001];
+Ant sort_ant[100001];
 main()
 {
-  int l,n;
-  ant a[100001];
-  for(;~scanf("%d%d",&l,&n);)
+  int L,N;
+  for(;~scanf("%d%d",&L,&N);)
   {
-    int i,j,k,max=0;
-    for(i=0;i<n;i++)
+    int i,res,res2;
+    for(i=0;i<N;i++)
     {
-      scanf("%d %c",&a[i].pos,&a[i].move);
-      j=a[i].move=='L'?a[i].pos:l-a[i].pos;
-      max=max<j?j:max;
+      ant[i].no = 0;
+      scanf(" %d %c",&ant[i].pos,&ant[i].no);
+      ant[i].no = ant[i].no == 'R'? 1: -1;
+      ant[i].len = ant[i].no > 0? L - ant[i].pos : ant[i].pos;
+      sort_ant[i] = ant[i];
     }
-    int p=-1,q=-1;
-    for(i=0;i<n;i++)
+    
+    qsort(sort_ant,N,sizeof(Ant),cmp);
+    qsort(ant,N,sizeof(Ant),cmp2);
+    
+    int start, end;
+    start = 0;
+    end = N-1;
+    
+    for(i=0;i<N;i++)
     {
-      j=a[i].move=='L'?a[i].pos:l-a[i].pos;
-      if(max==j)
+      int pick, pick2 = -1;
+      if(sort_ant[i].no > 0) pick = end--;
+      else pick = start++;
+      if(i==N-2 && sort_ant[i].len == sort_ant[i+1].len)
       {
-        int m=0;
-        if(p==-1)
-        {
-          for(j=0;j<n;j++)
-          {
-            k=a[j].move=='L'?a[j].pos:l-a[j].pos;
-            if(k!=max&&a[i].move!=a[j].move)
-            {
-              if(a[i].move=='L'&&a[i].pos-a[j].pos>m)
-              {
-                m=a[i].pos-a[j].pos;
-                p=a[j].pos;
-              }
-              else if(a[i].move=='R'&&a[j].pos-a[i].pos>m)
-              {
-                m=a[j].pos-a[i].pos;
-                p=a[j].pos;
-              }
-            }
-          }
-        }
-        else
-        {
-          for(j=0;j<n;j++)
-          {
-            k=a[j].move=='L'?a[j].pos:l-a[j].pos;
-            if(k!=max&&a[i].move!=a[j].move)
-            {
-              if(a[i].move=='L'&&a[i].pos-a[j].pos>m)
-              {
-                m=a[i].pos-a[j].pos;
-                q=a[j].pos;
-              }
-              else if(a[i].move=='R'&&a[j].pos-a[i].pos>m)
-              {
-                m=a[j].pos-a[i].pos;
-                q=a[j].pos;
-              }
-            }
-          }
-          break;
-        }
+        if(sort_ant[i+1].no > 0) pick2 = end--;
+        else pick2 = start++;
+        
+        res = ant[pick].pos < ant[pick2].pos? ant[pick].pos: ant[pick2].pos;
+        res2 = ant[pick].pos < ant[pick2].pos? ant[pick2].pos: ant[pick].pos;
+        printf("The last ant will fall down in %d seconds - started at %d and %d.\n",sort_ant[i].len,res,res2);
+        break;
       }
+      res = ant[pick].pos;
     }
-    printf("The last ant will fall down in %d seconds - started at ",max);
-    if(q==-1)printf("%d.\n",p==-1?a[0].pos:p);
-    else printf("%d and %d.\n",p<q?p:q,p<q?q:p);
+    if(i==N)printf("The last ant will fall down in %d seconds - started at %d.\n",sort_ant[N-1].len,res);
   }
 }
