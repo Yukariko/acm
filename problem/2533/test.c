@@ -35,46 +35,44 @@ qData qPop(Queue *q)
   return data;
 }
 
+Min(a,b){return a>b?b:a;}
+
 Queue *tree[1000001];
 int N;
-int dp[1000001];
+int dp[1000001][2];
 char visit[1000001];
-f(pos,needAlly)
+f(pos,isEarly)
 {
-  if(dp[pos]) return dp[pos];
+  if(dp[pos][isEarly]) return dp[pos][isEarly];
   LinkedList *tmp = tree[pos]->head;
-  int min,k,res=0;
+  int early=1,notEarly=0;
   for(int i=0;i<tree[pos]->count;i++)
   {
-    min = 1+f(tmp->data,0);
-    if(needAlly == 0)
+    if(visit[tmp->data] == 0)
     {
-      k = f(tmp->data,1);
-      min = min > k? k: min;
+      visit[tmp->data] = 1;
+      early += f(tmp->data,1);
+      if(isEarly == 1)
+      {
+        notEarly += f(tmp->data,0);
+      }
+      visit[tmp->data] = 0;
     }
-    if(pos==1)printf("%d %d\n",needAlly,min);
-    res += min;
-    tmp = tmp->next; 
+    tmp = tmp->next;
   }
-  return dp[pos] = res;
+  return dp[pos][isEarly] = isEarly? Min(early,notEarly) : early;
 }
 main()
 {
-  int p,q;
-  int i;
+  int p,q,i;
   scanf("%d",&N);
   for(i=0;i<=N;i++)tree[i] = CreateQueue();
   for(i=1;i<N;i++)
   {
     scanf("%d%d",&p,&q);
     qPush(tree[p],q);
-    visit[q]=1;
+    qPush(tree[q],p);
   }
-  
-  int root;
-  for(i=1;i<=N;i++)if(visit[i]==0)break;
-  root=i;
-  qPush(tree[0],root);
-  p=f(0,0);
-  printf("%d",p);
+  visit[1]=1;
+  printf("%d",Min(f(1,0),f(1,1)));
 }
