@@ -17,6 +17,5 @@ main()
       stk[sp]++;
     }
   }
-  for(i=1;i<4;i++)printf("%d ",mult[i]);
   printf("%d",stk[0]);
 }
