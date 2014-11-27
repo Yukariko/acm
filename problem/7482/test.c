@@ -8,4 +8,3 @@ main()
 		printf("%.10lf\n", a / 6);
 	}
 }
-
