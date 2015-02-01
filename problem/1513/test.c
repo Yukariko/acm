@@ -1,33 +1,43 @@
-int point[51];
-char map[51][51];
-int n,m;
-f(i,j,s,p)
-{
-  if(map[i][j])
-  {
-    p=map[i][j];
-    s++;
-  }
-  if(i==n&&j==m)
-  {
-    point[s]=(point[s]+1)%1000007;
-    return;
-  }
-  if(i<n&&(map[i+1][j]==0||map[i+1][j]>p))f(i+1,j,s,p);
-  if(j<m&&(map[i][j+1]==0||map[i][j+1]>p))f(i,j+1,s,p);
+const int MOD = 1000007;
 
+int N,M,K;
+int map[51][51];
+
+int dp[51][51][51][51];
+
+int max(int a,int b){return a>b?a:b;}
+
+int solve(int x,int y,int c, int limit)
+{
+	
+	if(x > N || y > M) return 0;
+	
+	int *ret = &dp[x][y][c][limit];
+	if(*ret != -1) return *ret;
+	*ret = 0;
+	
+	if(map[x][y])
+	{
+		if(map[x][y] < c || !limit) return 0;
+		c = map[x][y];
+		limit--;
+	}
+  const int end = x == N && y == M && !limit;
+	return *ret = (end + solve(x+1,y,c,limit) + solve(x,y+1,c,limit)) % MOD;
 }
+
 main()
 {
-  int k;
-  scanf("%d%d%d",&n,&m,&k);
-
-  int i,x,y;
-  for(i=1;i<=k;i++)
-  {
-    scanf("%d%d",&x,&y);
-    map[x][y]=i;
-  }
-  f(1,1,0,0);
-  for(i=0;i<=k;i++)printf("%d ",point[i]);
+	scanf("%d%d%d",&N,&M,&K);
+	for(int i=1;i<=K;i++)
+	{
+		int x,y;
+		scanf("%d%d",&x,&y);
+		map[x][y]=i;
+	}
+	memset(dp,-1,sizeof(dp));
+	for(int i=0;i<=K;i++)
+	{
+		printf("%d ",solve(1,1,0,i));
+	}
 }
