@@ -1,26 +1,28 @@
+#include <stdio.h>
+
+int a[500001];
 int b[500001];
-main()
+int main()
 {
-  int n;
-  int a[500001];
-  scanf("%d",&n);
-  int i,j;
-  scanf("%d",a);
-  int max=a[0];
-  printf("0 ");
-  for(i=1;i<n;i++)
-  {
-    scanf("%d",a+i);
-    if(max<a[i])
+    a[0] = 987654321;
+    int N;
+    scanf("%d",&N);
+    int max = 0;
+    for(int i=1;i<=N;i++)
     {
-      printf("0 ");
-      max=a[i];
+        scanf("%d",&a[i]);
+        if(max < a[i])
+        {
+            max = a[i];
+            printf("0 ");
+        }
+        else
+        {
+            int dst=i-1;
+            for(;a[dst] < a[i];dst = b[dst]);
+            b[i]=dst;
+            printf("%d ",dst);
+        }
     }
-    else
-    {
-      for(j=i-1;a[i]>a[j];j=b[j]);
-      b[i]=j;
-      printf("%d ",j+1);
-    }
-  }
+    return 0;
 }
