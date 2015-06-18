@@ -13,28 +13,28 @@ Queue *head,*tail;
 
 void push(DATA val)
 {
-  tail->data=val;
-  tail->next=(Queue *)malloc(sizeof(Queue));
-  tail=tail->next;
-  tail->next=0;
+	tail->data=val;
+	tail->next=(Queue *)malloc(sizeof(Queue));
+	tail=tail->next;
+	tail->next=0;
 }
 DATA pop()
 {
-  Queue *p=head;
-  DATA result=head->data;
-  head=head->next;
-  free(p);
-  return result;
+	Queue *p=head;
+	DATA result=head->data;
+	head=head->next;
+	free(p);
+	return result;
 }
 int isEmpty()
 {
-  return !head;
+	return !head;
 }
 void init()
 {
-  head=(Queue *)malloc(sizeof(Queue));
-  head->next=0;
-  tail=head;
+	head=(Queue *)malloc(sizeof(Queue));
+	head->next=0;
+	tail=head;
 }
 
 const int D[2][4] = {
