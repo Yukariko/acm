@@ -38,15 +38,15 @@ int main()
 	int N;
 	scanf("%d",&N);
 	
-  for(int i=0;i<N;i++)
-  {
-  	char node, left, right;
-  	scanf(" %c %c %c",&node,&left,&right);
-    a[node].left=left;
-    a[node].right=right;
-  }
+	for(int i=0;i<N;i++)
+  	{
+		char node, left, right;
+		scanf(" %c %c %c",&node,&left,&right);
+		a[node].left=left;
+		a[node].right=right;
+	}
   
-  preorder('A');
+	preorder('A');
 	puts("");
 	inorder('A');
 	puts("");
