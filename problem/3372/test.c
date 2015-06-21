@@ -22,7 +22,7 @@ char *bigPlus(char *store,char *a,char *b)
 
 int N;
 int map[101][101];
-char dp[101][101][201];
+char dp[101][101][101];
 
 char* solve(int y,int x)
 {
