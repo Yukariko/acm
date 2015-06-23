@@ -30,9 +30,7 @@ int solve(int pos, int cnt)
 	{
 		int diff = a[pos+1]-a[pos];
 		if(diff >= i)
-		{
 			*ret = min(*ret, max((diff+i-1)/i, solve(pos+1,cnt-i+1)));
-		}
 	}
 	return *ret;
 }
