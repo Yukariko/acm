@@ -12,7 +12,7 @@ bool cmp(const player &p, const player &q)
 {
 	int a = p.pow + q.pow * p.mag;
 	int b = q.pow + p.pow * q.mag;
-	return a > b;
+	return a < b;
 }
 
 int main()
@@ -32,5 +32,6 @@ int main()
 	for(int i=0; i < N; i++)
 		cout << a[i].no << endl;
 
+	
 	return 0;
 }
