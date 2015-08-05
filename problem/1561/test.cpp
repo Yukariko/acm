@@ -10,7 +10,7 @@ long long getAns(int *a, int M, long long mid)
 		return 0;
 	long long ans = M;
 	for(int i=0; i < M; i++)
-			ans += mid / a[i];
+		ans += mid / a[i];
 	return ans;
 }
 
@@ -18,7 +18,7 @@ long long getMod(int *a, int M, long long mid)
 {
 	long long ans = 0;
 	for(int i=0; i < M; i++)
-			ans += mid % a[i] == 0;
+		ans += mid % a[i] == 0;
 	return ans;
 }
 
