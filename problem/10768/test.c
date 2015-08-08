@@ -1,0 +1,1 @@
+main(a,b){scanf("%d%d",&a,&b);a=a*50+b;puts(a>118?"After":a<118?"Before":"Special");}
