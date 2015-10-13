@@ -25,6 +25,7 @@ int main()
 			for(int i=0; i < 3; i++)
 				for(int j=div[i]; j <= N % 100; j++)
 					dp[j] = min(dp[j], dp[j-div[i]] + 1);
+				
 			ans += dp[N % 100];
 			N /= 100;
 		}
