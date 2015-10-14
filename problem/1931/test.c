@@ -1,9 +1,9 @@
 typedef struct time{int x,y;}time;
-time t[100001];
-cmp(time *a,time *b){return a->y<b->y?-1:a->y>b->y?1:0;}
+cmp(time *a,time *b){return a->y<b->y?-1:a->y>b->y?1:a->x<b->x?-1:a->x > b->x? 1:0;}
 main()
 {
   int n;
+  time t[100001];
   scanf("%d",&n);
   int i,j;
   for(i=0;i<n;i++)scanf("%d%d",&t[i].x,&t[i].y);
