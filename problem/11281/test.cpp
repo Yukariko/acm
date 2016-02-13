@@ -112,5 +112,7 @@ int main()
 
 	vector<int> ans;
 	printf("%d\n", solve2SAT(ans));
+	for(size_t i=1; i < ans.size(); i++)
+		printf("%d ", ans[i]);
 	return 0;
 }
