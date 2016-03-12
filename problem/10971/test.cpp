@@ -1,49 +1,46 @@
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 int N;
 int a[11][11];
-int src;
-
 bool visit[11];
-int tsp(int here)
+int start;
+
+
+int solve(int pos, int here)
 {
-	bool move = false;
+	if(pos == N)
+		return a[here][start]? a[here][start]: 9876354321;
+		
 	int ans = 987654321;
-	for(int i=0; i < N; i++)
+	for(int there=0; there < N; there++)
 	{
-		if(visit[i] == false && a[here][i])
+		if(visit[there] == false && a[here][there])
 		{
-			move = true;
-			visit[i] = true;
-			ans = min(ans, a[here][i] + tsp(i));
-			visit[i] = false;
+			visit[there] = true;
+			ans = min(ans, a[here][there] + solve(pos + 1, there));
+			visit[there] = false;
 		}
 	}
-
-	if(!move && a[here][src])
-		ans = a[here][src];
 	return ans;
 }
 
 int main()
 {
-	cin >> N;
+	scanf("%d", &N);
 	for(int i=0; i < N; i++)
 		for(int j=0; j < N; j++)
-			cin >> a[i][j];
-
+			scanf("%d", &a[i][j]);
+	
 	int ans = 987654321;
-	for(int i=0; i < N; i++)
+	while(start < N)
 	{
-		src = i;
-		visit[src] = true;
-		ans = min(ans, tsp(i));
-		visit[src] = false;
+		visit[start] = true;
+		ans = min(ans, solve(1, start));
+		visit[start] = false;
+		start++;
 	}
-
-	cout << ans;
+	printf("%d", ans);
 	return 0;
 }
