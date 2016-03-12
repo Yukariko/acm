@@ -15,10 +15,10 @@ int main()
 		max = max < a[i]? a[i]: max;
 	}
 
-	int start = 0, end = max;
+	long long start = 0, end = max;
 	while(start <= end)
 	{
-		int mid = (start + end) / 2;
+		long long mid = (start + end) / 2;
 		int val = 0;
 		for(int i=0;i<K && val < N;i++)
 			val += a[i] / mid;
@@ -27,6 +27,6 @@ int main()
 		else
 			end = mid - 1;
 	}
-	printf("%d",end);
+	printf("%lld",end);
 	return 0;
 }
