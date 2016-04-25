@@ -38,6 +38,5 @@ int main()
 		if(solve(0, 0))
 			puts(b);
 	}
-
 	return 0;
 }
