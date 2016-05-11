@@ -5,7 +5,6 @@ using namespace std;
 const int INF = 987654321;
 
 int V = 127;
-
 int cap[127][127];
 int flow[127][127];
 
