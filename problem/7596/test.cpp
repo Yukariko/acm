@@ -18,7 +18,6 @@ int main()
 		}
 
 		sort(a.begin(), a.end());
-
 		for(int i=0; i < N; i++)
 			puts(a[i].c_str());
 	}
